@@ -19,7 +19,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
         }
         .coffre {
             width: 200px;
@@ -30,50 +29,39 @@
         }
         .passwords {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
+            flex-direction: column;
+            align-items: center;
         }
-        .password {
+        .passwords button {
             background-color: #f4c542;
             color: black;
             border: none;
             padding: 10px 20px;
+            margin: 10px 0;
             border-radius: 5px;
-            cursor: grab;
+            cursor: pointer;
             font-size: 1.1em;
             transition: transform 0.3s ease;
-            user-select: none;
         }
-        .password:active {
-            cursor: grabbing;
+        .passwords button:hover {
+            transform: scale(1.1);
+            background-color: #f7e073;
         }
-        .dropzone {
-            width: 300px;
-            height: 150px;
-            border: 3px dashed #f4c542;
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #ffffff;
+        .result {
+            margin-top: 20px;
             font-size: 1.2em;
             font-weight: bold;
-            transition: background-color 0.3s ease;
         }
-        .dropzone.correct {
-            background-color: #28a745;
-            color: #ffffff;
+        .result.correct {
+            color: #28a745;
         }
-        .dropzone.incorrect {
-            background-color: #dc3545;
-            color: #ffffff;
+        .result.incorrect {
+            color: #dc3545;
         }
         .key-animation {
             font-size: 50px;
             margin-top: 20px;
             animation: bounce 1s infinite;
-            display: none;
         }
         @keyframes bounce {
             0%, 100% {
@@ -87,53 +75,46 @@
 </head>
 <body>
     <h1>Mission : Protégez le Trésor</h1>
-    <p>Glisse et dépose le bon mot de passe dans le coffre pour le sécuriser !</p>
+    <p>Choisis le bon mot de passe pour sécuriser le coffre !</p>
     <div class="game-container">
         <div class="coffre"></div>
-        <div class="dropzone" id="dropzone">Déposez ici</div>
         <div class="passwords">
-            <div class="password" draggable="true" ondragstart="drag(event)" id="password1">P@ssword!</div>
-            <div class="password" draggable="true" ondragstart="drag(event)" id="password2">Summer2025</div>
-            <div class="password" draggable="true" ondragstart="drag(event)" id="password3">A$7kL%z9#Qw</div>
-            <div class="password" draggable="true" ondragstart="drag(event)" id="password4">BlueSky99</div>
-            <div class="password" draggable="true" ondragstart="drag(event)" id="password5">Secure123!</div>
+            <button onclick="checkPassword('123456')">123456</button>
+            <button onclick="checkPassword('password123')">password123</button>
+            <button onclick="checkPassword('F!z7$R&2d@Xq')">F!z7$R&2d@Xq</button>
+            <button onclick="checkPassword('monchienetmonchat')">monchienetmonchat</button>
         </div>
-        <div class="key-animation" id="key">🔑</div>
+        <div class="result" id="result"></div>
+        <div class="key-animation" id="key" style="display: none;">🔑</div>
     </div>
 
     <script>
-        let correctPassword = "password3";
-
-        function allowDrop(event) {
-            event.preventDefault();
-        }
-
-        function drag(event) {
-            event.dataTransfer.setData("text", event.target.id);
-        }
-
-        function drop(event) {
-            event.preventDefault();
-            const droppedId = event.dataTransfer.getData("text");
-            const droppedElement = document.getElementById(droppedId);
-            const dropzone = document.getElementById("dropzone");
+        function checkPassword(password) {
+            const result = document.getElementById("result");
             const key = document.getElementById("key");
 
-            if (droppedId === correctPassword) {
-                dropzone.textContent = "✅ Mot de passe sécurisé !";
-                dropzone.className = "dropzone correct";
+            if (password === "123456") {
+                result.textContent = "❌ Mauvais choix : Ce mot de passe est trop court et facile à deviner !";
+                result.className = "result incorrect";
+                key.style.display = "none";
+            } else if (password === "password123") {
+                result.textContent = "❌ Mauvais choix : Les mots communs restent dangereux, même avec des chiffres.";
+                result.className = "result incorrect";
+                key.style.display = "none";
+            } else if (password === "F!z7$R&2d@Xq") {
+                result.textContent = "✅ Excellent ! Tu as choisi un mot de passe sécurisé.";
+                result.className = "result correct";
                 key.style.display = "block";
+            } else if (password === "monchienetmonchat") {
+                result.textContent = "⚠️ Pas mal, mais il manque des caractères spéciaux pour être vraiment sûr.";
+                result.className = "result incorrect";
+                key.style.display = "none";
             } else {
-                dropzone.textContent = "❌ Mauvais mot de passe !";
-                dropzone.className = "dropzone incorrect";
+                result.textContent = "Erreur inattendue.";
+                result.className = "";
                 key.style.display = "none";
             }
         }
-
-        // Attach event listeners
-        const dropzoneElement = document.getElementById("dropzone");
-        dropzoneElement.addEventListener("dragover", allowDrop);
-        dropzoneElement.addEventListener("drop", drop);
     </script>
 </body>
 </html>
