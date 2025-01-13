@@ -34,6 +34,11 @@
         .submit-btn:hover {
             background-color: #45a049;
         }
+        .result {
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -52,7 +57,30 @@
         </div>
     </div>
 
-    <a href="q2.html"><button class="submit-btn">Suivant</button></a>
+    <button class="submit-btn" onclick="checkAnswer()">Soumettre</button>
+
+    <div class="result" id="result"></div>
+
+    <script>
+        function checkAnswer() {
+            const radios = document.getElementsByName('q1');
+            let userAnswer = '';
+            for (const radio of radios) {
+                if (radio.checked) {
+                    userAnswer = radio.value;
+                }
+            }
+
+            const result = document.getElementById('result');
+            if (userAnswer === 'a') {
+                result.textContent = 'Bonne réponse ! Le phishing est bien une tentative de fraude pour voler des informations sensibles.';
+                result.style.color = 'green';
+            } else {
+                result.textContent = 'Mauvaise réponse ! Le phishing est une tentative de fraude pour voler des informations sensibles.';
+                result.style.color = 'red';
+            }
+        }
+    </script>
 
 </body>
 </html>
