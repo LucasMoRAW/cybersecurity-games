@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini-jeu : Mot de Passe Sécurisé</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+            text-align: center;
+        }
+        .passwords {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .passwords button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .passwords button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Choisis le mot de passe le plus sécurisé</h1>
+    <p>Un bon mot de passe doit être long, complexe et difficile à deviner. Clique sur celui que tu penses être le plus sécurisé :</p>
+    <div class="passwords">
+        <button onclick="checkPassword('123456')">123456</button>
+        <button onclick="checkPassword('password123')">password123</button>
+        <button onclick="checkPassword('F!z7$R&2d@Xq')">F!z7$R&2d@Xq</button>
+        <button onclick="checkPassword('monchienetmonchat')">monchienetmonchat</button>
+    </div>
+    <div class="result" id="result"></div>
+
+    <script>
+        function checkPassword(password) {
+            const result = document.getElementById("result");
+
+            if (password === "123456") {
+                result.textContent = "Mauvais choix : Ce mot de passe est trop court et très facile à deviner.";
+                result.style.color = "red";
+            } else if (password === "password123") {
+                result.textContent = "Mauvais choix : Utiliser 'password' ou des mots communs est risqué, même avec des chiffres.";
+                result.style.color = "orange";
+            } else if (password === "F!z7$R&2d@Xq") {
+                result.textContent = "Excellent choix ! Ce mot de passe est long, contient des caractères spéciaux, des chiffres et des lettres.";
+                result.style.color = "green";
+            } else if (password === "monchienetmonchat") {
+                result.textContent = "Pas mal, mais il manque des caractères spéciaux pour être vraiment sécurisé.";
+                result.style.color = "orange";
+            } else {
+                result.textContent = "Erreur inattendue.";
+                result.style.color = "black";
+            }
+        }
+    </script>
+</body>
+</html>
