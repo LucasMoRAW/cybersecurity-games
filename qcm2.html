@@ -8,36 +8,76 @@
         body {
             font-family: Arial, sans-serif;
             margin: 40px;
+            background-color: #f0f8ff;
         }
         h1 {
             text-align: center;
             color: #333;
+            font-size: 2.5em;
         }
         .question {
             margin: 20px 0;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .question p {
             font-weight: bold;
+            font-size: 1.3em;
         }
         .options {
             margin-left: 20px;
+            margin-top: 15px;
+        }
+        .options label {
+            display: block;
+            font-size: 1.1em;
+            padding: 10px;
+            background-color: #f4f4f4;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .options input[type="radio"] {
+            display: none;
+        }
+        .options label:hover {
+            background-color: #e0e0e0;
+        }
+        .options input[type="radio"]:checked + label {
+            background-color: #4CAF50;
+            color: white;
+            border: 2px solid #4CAF50;
         }
         .submit-btn {
             display: block;
             margin: 20px auto;
-            padding: 10px 20px;
+            padding: 12px 25px;
             background-color: #4CAF50;
             color: white;
             border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
         .submit-btn:hover {
             background-color: #45a049;
         }
         .result {
             text-align: center;
-            font-size: 1.2em;
+            font-size: 1.5em;
             margin-top: 20px;
+            font-weight: bold;
+        }
+        .result.correct {
+            color: green;
+        }
+        .result.incorrect {
+            color: red;
         }
     </style>
 </head>
@@ -74,10 +114,12 @@
             const result = document.getElementById('result');
             if (userAnswer === 'b') {
                 result.textContent = 'Bonne réponse ! Un pare-feu filtre le trafic réseau pour bloquer les accès non autorisés.';
-                result.style.color = 'green';
+                result.classList.add('correct');
+                result.classList.remove('incorrect');
             } else {
                 result.textContent = 'Mauvaise réponse ! Un pare-feu filtre le trafic réseau pour bloquer les accès non autorisés.';
-                result.style.color = 'red';
+                result.classList.add('incorrect');
+                result.classList.remove('correct');
             }
         }
     </script>
