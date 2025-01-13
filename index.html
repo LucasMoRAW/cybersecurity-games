@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Défi Cybersécurité - Email de Phishing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .email-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            background-color: #f9f9f9;
+        }
+        .email-header {
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+        .choices {
+            margin-top: 20px;
+        }
+        .choices button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .choices button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Défi Cybersécurité : Reconnaître un Email de Phishing</h1>
+    <div class="email-container">
+        <p class="email-header">Votre banque (contact@securebank.com)</p>
+        <p>Bonjour,<br><br>
+        Nous avons remarqué une activité suspecte sur votre compte. Veuillez <a href="http://fake-securebank.com">cliquer ici</a> pour vérifier vos informations immédiatement.
+        </p>
+    </div>
+    <h2>Quels sont les éléments suspects ?</h2>
+    <div class="choices">
+        <button onclick="alert('Correct ! L\'adresse email est suspecte.')">Adresse Email</button>
+        <button onclick="alert('Faux ! Essayez encore.')">Logo</button>
+        <button onclick="alert('Correct ! Le lien n\'est pas sécurisé.')">Lien</button>
+        <button onclick="alert('Faux ! Essayez encore.')">Orthographe</button>
+    </div>
+</body>
+</html>
