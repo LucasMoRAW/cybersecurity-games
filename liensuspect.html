@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QCM - Cybersécurité : Lien Suspect</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to left, #ffcc00, #ff6699);
+            color: white;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        .question-container {
+            background-color: #333;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+        }
+        .question {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+        .answer-button {
+            background-color: #2980b9;
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .answer-button:hover {
+            background-color: #3498db;
+        }
+        .answer-button:active {
+            background-color: #2980b9;
+        }
+        .message {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Défi Cybersécurité : Lien Suspect</h1>
+    <div class="question-container">
+        <p class="question">Quel élément suspect détectez-vous dans ce lien ?</p>
+        <button class="answer-button" onclick="checkAnswer('correct')">Lien Non Sécurisé</button>
+        <button class="answer-button" onclick="checkAnswer('incorrect')">Texte du Lien</button>
+        <button class="answer-button" onclick="checkAnswer('incorrect')">Raccourci Lien</button>
+        <button class="answer-button" onclick="checkAnswer('incorrect')">Le Domaine</button>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        function checkAnswer(answer) {
+            const message = document.getElementById("message");
+            if (answer === 'correct') {
+                message.textContent = "Bonne réponse ! Le lien n'est pas sécurisé.";
+                message.style.color = "#4CAF50";
+            } else {
+                message.textContent = "Mauvaise réponse ! Le lien n'est pas sécurisé.";
+                message.style.color = "#e74c3c";
+            }
+        }
+    </script>
+</body>
+</html>
