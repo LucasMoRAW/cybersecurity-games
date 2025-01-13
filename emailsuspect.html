@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QCM - Cybersécurité : Adresse Email</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: white;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        .question-container {
+            background-color: #2d3e50;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+        }
+        .question {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+        .answer-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .answer-button:hover {
+            background-color: #45a049;
+        }
+        .answer-button:active {
+            background-color: #3c9d40;
+        }
+        .message {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Défi Cybersécurité : Adresse Email Suspecte</h1>
+    <div class="question-container">
+        <p class="question">Quel élément suspect détectez-vous dans cet email ?</p>
+        <button class="answer-button" onclick="checkAnswer('correct')">Adresse Email</button>
+        <button class="answer-button" onclick="checkAnswer('incorrect')">Logo</button>
+        <button class="answer-button" onclick="checkAnswer('incorrect')">Lien</button>
+        <button class="answer-button" onclick="checkAnswer('incorrect')">Orthographe</button>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        function checkAnswer(answer) {
+            const message = document.getElementById("message");
+            if (answer === 'correct') {
+                message.textContent = "Bonne réponse ! L'adresse email est suspecte.";
+                message.style.color = "#4CAF50";
+            } else {
+                message.textContent = "Mauvaise réponse ! L'adresse email est suspecte.";
+                message.style.color = "#e74c3c";
+            }
+        }
+    </script>
+</body>
+</html>
