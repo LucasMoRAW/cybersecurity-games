@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QCM Cybersécurité</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .question {
+            margin: 20px 0;
+        }
+        .question p {
+            font-weight: bold;
+        }
+        .options {
+            margin-left: 20px;
+        }
+        .submit-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Quiz Cybersécurité</h1>
+
+    <form id="qcm-form">
+        <!-- Question 1 -->
+        <div class="question">
+            <p>1. Qu'est-ce que le phishing ?</p>
+            <div class="options">
+                <input type="radio" id="q1a1" name="q1" value="a">
+                <label for="q1a1">Une tentative de fraude pour voler des informations sensibles.</label><br>
+                <input type="radio" id="q1a2" name="q1" value="b">
+                <label for="q1a2">Un logiciel malveillant qui chiffre des fichiers.</label><br>
+                <input type="radio" id="q1a3" name="q1" value="c">
+                <label for="q1a3">Une méthode d'authentification à deux facteurs.</label>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question">
+            <p>2. Quel est le rôle d'un pare-feu ?</p>
+            <div class="options">
+                <input type="radio" id="q2a1" name="q2" value="a">
+                <label for="q2a1">Il crypte les échanges de données entre un serveur et un utilisateur.</label><br>
+                <input type="radio" id="q2a2" name="q2" value="b">
+                <label for="q2a2">Il filtre le trafic réseau pour bloquer les accès non autorisés.</label><br>
+                <input type="radio" id="q2a3" name="q2" value="c">
+                <label for="q2a3">Il envoie des alertes en cas de tentative d'attaque.</label>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question">
+            <p>3. Que signifie VPN ?</p>
+            <div class="options">
+                <input type="radio" id="q3a1" name="q3" value="a">
+                <label for="q3a1">Virtual Private Network (Réseau Privé Virtuel).</label><br>
+                <input type="radio" id="q3a2" name="q3" value="b">
+                <label for="q3a2">Variable Personal Network (Réseau Personnel Variable).</label><br>
+                <input type="radio" id="q3a3" name="q3" value="c">
+                <label for="q3a3">Very Private Network (Réseau Très Privé).</label>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question">
+            <p>4. Que fait un antivirus ?</p>
+            <div class="options">
+                <input type="radio" id="q4a1" name="q4" value="a">
+                <label for="q4a1">Il chiffre les échanges de données entre un site web et un utilisateur.</label><br>
+                <input type="radio" id="q4a2" name="q4" value="b">
+                <label for="q4a2">Il détecte et élimine les logiciels malveillants.</label><br>
+                <input type="radio" id="q4a3" name="q4" value="c">
+                <label for="q4a3">Il crypte les mots de passe des utilisateurs.</label>
+            </div>
+        </div>
+
+        <button type="button" class="submit-btn" onclick="checkAnswers()">Soumettre</button>
+    </form>
+
+    <script>
+        function checkAnswers() {
+            const answers = {
+                q1: 'a',
+                q2: 'b',
+                q3: 'a',
+                q4: 'b',
+            };
+
+            let score = 0;
+            const form = document.getElementById('qcm-form');
+            const formData = new FormData(form);
+
+            formData.forEach((value, key) => {
+                if (value === answers[key]) {
+                    score++;
+                }
+            });
+
+            alert('Vous avez répondu correctement à ' + score + ' question(s) sur 4.');
+        }
+    </script>
+
+</body>
+</html>
