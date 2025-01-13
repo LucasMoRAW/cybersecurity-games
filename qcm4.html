@@ -34,6 +34,11 @@
         .submit-btn:hover {
             background-color: #45a049;
         }
+        .result {
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -44,15 +49,38 @@
         <p>4. Que signifie l'acronyme VPN ?</p>
         <div class="options">
             <input type="radio" id="q4a1" name="q4" value="a">
-            <label for="q4a1">Virtual Public Network</label><br>
+            <label for="q4a1">Virtual Public Network.</label><br>
             <input type="radio" id="q4a2" name="q4" value="b">
-            <label for="q4a2">Virtual Private Network</label><br>
+            <label for="q4a2">Virtual Private Network.</label><br>
             <input type="radio" id="q4a3" name="q4" value="c">
-            <label for="q4a3">Virtual Personal Network</label>
+            <label for="q4a3">Very Private Network.</label>
         </div>
     </div>
 
-    <a href="q5.html"><button class="submit-btn">Suivant</button></a>
+    <button class="submit-btn" onclick="checkAnswer()">Soumettre</button>
+
+    <div class="result" id="result"></div>
+
+    <script>
+        function checkAnswer() {
+            const radios = document.getElementsByName('q4');
+            let userAnswer = '';
+            for (const radio of radios) {
+                if (radio.checked) {
+                    userAnswer = radio.value;
+                }
+            }
+
+            const result = document.getElementById('result');
+            if (userAnswer === 'b') {
+                result.textContent = 'Bonne réponse ! VPN signifie Virtual Private Network.';
+                result.style.color = 'green';
+            } else {
+                result.textContent = 'Mauvaise réponse ! VPN signifie Virtual Private Network.';
+                result.style.color = 'red';
+            }
+        }
+    </script>
 
 </body>
 </html>
