@@ -99,9 +99,9 @@
             <p>1. Qu'est-ce que le phishing ?</p>
         </div>
         <div class="options">
-            <label onclick="checkAnswer('a')">Une tentative de fraude pour voler des informations sensibles.</label>
-            <label onclick="checkAnswer('b')">Un logiciel malveillant qui chiffre des fichiers.</label>
-            <label onclick="checkAnswer('c')">Une méthode d'authentification à deux facteurs.</label>
+            <label onclick="selectAnswer('a')">Une tentative de fraude pour voler des informations sensibles.</label>
+            <label onclick="selectAnswer('b')">Un logiciel malveillant qui chiffre des fichiers.</label>
+            <label onclick="selectAnswer('c')">Une méthode d'authentification à deux facteurs.</label>
         </div>
         <button class="submit-btn" onclick="checkAnswer()">Soumettre</button>
 
@@ -109,7 +109,13 @@
     </div>
 
     <script>
-        function checkAnswer(answer) {
+        let selectedAnswer = '';
+
+        function selectAnswer(answer) {
+            selectedAnswer = answer;
+        }
+
+        function checkAnswer() {
             const result = document.getElementById('result');
             const options = document.querySelectorAll('.options label');
             const submitBtn = document.querySelector('.submit-btn');
@@ -118,7 +124,7 @@
             options.forEach(option => option.style.pointerEvents = 'none');
 
             // Vérifier la réponse
-            if (answer === 'a') {
+            if (selectedAnswer === 'a') {
                 result.textContent = 'Bonne réponse ! Le phishing est bien une tentative de fraude pour voler des informations sensibles.';
                 result.classList.add('correct');
                 result.classList.remove('incorrect');
