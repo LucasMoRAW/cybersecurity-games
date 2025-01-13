@@ -3,70 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini-jeu : Mot de Passe Sécurisé</title>
+    <title>Mission : Protégez le Trésor</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+            background-color: #1e1e2f;
+            color: #ffffff;
             padding: 20px;
             text-align: center;
+        }
+        h1 {
+            color: #f4c542;
+        }
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .coffre {
+            width: 200px;
+            height: 200px;
+            background-image: url('https://cdn-icons-png.flaticon.com/512/2102/2102573.png');
+            background-size: cover;
+            margin: 20px;
         }
         .passwords {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 20px;
         }
         .passwords button {
-            background-color: #007bff;
-            color: white;
+            background-color: #f4c542;
+            color: black;
             border: none;
-            padding: 10px 15px;
+            padding: 10px 20px;
             margin: 10px 0;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 1.1em;
+            transition: transform 0.3s ease;
         }
         .passwords button:hover {
-            background-color: #0056b3;
+            transform: scale(1.1);
+            background-color: #f7e073;
         }
         .result {
             margin-top: 20px;
             font-size: 1.2em;
             font-weight: bold;
         }
+        .result.correct {
+            color: #28a745;
+        }
+        .result.incorrect {
+            color: #dc3545;
+        }
+        .key-animation {
+            font-size: 50px;
+            margin-top: 20px;
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Choisis le mot de passe le plus sécurisé</h1>
-    <p>Un bon mot de passe doit être long, complexe et difficile à deviner. Clique sur celui que tu penses être le plus sécurisé :</p>
-    <div class="passwords">
-        <button onclick="checkPassword('123456')">123456</button>
-        <button onclick="checkPassword('password123')">password123</button>
-        <button onclick="checkPassword('F!z7$R&2d@Xq')">F!z7$R&2d@Xq</button>
-        <button onclick="checkPassword('monchienetmonchat')">monchienetmonchat</button>
+    <h1>Mission : Protégez le Trésor</h1>
+    <p>Choisis le bon mot de passe pour sécuriser le coffre !</p>
+    <div class="game-container">
+        <div class="coffre"></div>
+        <div class="passwords">
+            <button onclick="checkPassword('123456')">123456</button>
+            <button onclick="checkPassword('password123')">password123</button>
+            <button onclick="checkPassword('F!z7$R&2d@Xq')">F!z7$R&2d@Xq</button>
+            <button onclick="checkPassword('monchienetmonchat')">monchienetmonchat</button>
+        </div>
+        <div class="result" id="result"></div>
+        <div class="key-animation" id="key" style="display: none;">🔑</div>
     </div>
-    <div class="result" id="result"></div>
 
     <script>
         function checkPassword(password) {
             const result = document.getElementById("result");
+            const key = document.getElementById("key");
 
             if (password === "123456") {
-                result.textContent = "Mauvais choix : Ce mot de passe est trop court et très facile à deviner.";
-                result.style.color = "red";
+                result.textContent = "❌ Mauvais choix : Ce mot de passe est trop court et facile à deviner !";
+                result.className = "result incorrect";
+                key.style.display = "none";
             } else if (password === "password123") {
-                result.textContent = "Mauvais choix : Utiliser 'password' ou des mots communs est risqué, même avec des chiffres.";
-                result.style.color = "orange";
+                result.textContent = "❌ Mauvais choix : Les mots communs restent dangereux, même avec des chiffres.";
+                result.className = "result incorrect";
+                key.style.display = "none";
             } else if (password === "F!z7$R&2d@Xq") {
-                result.textContent = "Excellent choix ! Ce mot de passe est long, contient des caractères spéciaux, des chiffres et des lettres.";
-                result.style.color = "green";
+                result.textContent = "✅ Excellent ! Tu as choisi un mot de passe sécurisé.";
+                result.className = "result correct";
+                key.style.display = "block";
             } else if (password === "monchienetmonchat") {
-                result.textContent = "Pas mal, mais il manque des caractères spéciaux pour être vraiment sécurisé.";
-                result.style.color = "orange";
+                result.textContent = "⚠️ Pas mal, mais il manque des caractères spéciaux pour être vraiment sûr.";
+                result.className = "result incorrect";
+                key.style.display = "none";
             } else {
                 result.textContent = "Erreur inattendue.";
-                result.style.color = "black";
+                result.className = "";
+                key.style.display = "none";
             }
         }
     </script>
