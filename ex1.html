@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Défi Cybersécurité - Drag & Drop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #6dd5ed, #2193b0);
+            text-align: center;
+            color: white;
+        }
+        h1 {
+            margin: 20px;
+        }
+        .email-container {
+            background-color: #f9f9f9;
+            color: black;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .email-header {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .drag-items {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .drag-item {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 8px;
+            cursor: grab;
+        }
+        .drag-item:hover {
+            background-color: #45a049;
+        }
+        .drop-zone {
+            border: 2px dashed white;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 10px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        .drop-zone.correct {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .drop-zone.incorrect {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f1c40f;
+            border: none;
+            border-radius: 5px;
+            color: black;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #d4ac0d;
+        }
+    </style>
+</head>
+<body>
+    <h1>Défi Cybersécurité : Drag & Drop</h1>
+    <div class="email-container">
+        <p class="email-header">Votre banque (contact@securebank.com)</p>
+        <p>Bonjour,<br><br>
+        Nous avons remarqué une activité suspecte sur votre compte. Veuillez <a href="http://fake-securebank.com">cliquer ici</a> pour vérifier vos informations immédiatement.
+        </p>
+    </div>
+    <h2>Faites glisser les éléments suspects dans la zone ci-dessous :</h2>
+    <div class="drag-items">
+        <div class="drag-item" draggable="true" id="email">Adresse Email</div>
+        <div class="drag-item" draggable="true" id="link">Lien</div>
+        <div class="drag-item" draggable="true" id="logo">Logo</div>
+        <div class="drag-item" draggable="true" id="spelling">Orthographe</div>
+    </div>
+    <div class="drop-zone" id="dropZone">Déposez ici</div>
+    <button class="button" onclick="resetGame()">Rejouer</button>
+
+    <script>
+        const dropZone = document.getElementById("dropZone");
+        const correctAnswers = ["email", "link"]; // Les réponses correctes
+
+        document.querySelectorAll(".drag-item").forEach(item => {
+            item.addEventListener("dragstart", event => {
+                event.dataTransfer.setData("text", event.target.id);
+            });
+        });
+
+        dropZone.addEventListener("dragover", event => {
+            event.preventDefault();
+            dropZone.classList.add("hover");
+        });
+
+        dropZone.addEventListener("dragleave", () => {
+            dropZone.classList.remove("hover");
+        });
+
+        dropZone.addEventListener("drop", event => {
+            event.preventDefault();
+            dropZone.classList.remove("hover");
+
+            const id = event.dataTransfer.getData("text");
+            const item = document.getElementById(id);
+
+            if (correctAnswers.includes(id)) {
+                dropZone.classList.add("correct");
+                dropZone.textContent = "Bonne réponse !";
+            } else {
+                dropZone.classList.add("incorrect");
+                dropZone.textContent = "Mauvaise réponse ! Essayez encore.";
+            }
+
+            // Désactiver le drag après une réponse
+            item.setAttribute("draggable", false);
+            item.style.opacity = "0.5";
+        });
+
+        function resetGame() {
+            dropZone.className = "drop-zone";
+            dropZone.textContent = "Déposez ici";
+
+            document.querySelectorAll(".drag-item").forEach(item => {
+                item.setAttribute("draggable", true);
+                item.style.opacity = "1";
+            });
+        }
+    </script>
+</body>
+</html>
