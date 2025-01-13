@@ -83,6 +83,11 @@
         .button:hover {
             background-color: #d4ac0d;
         }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -102,42 +107,53 @@
     </div>
     <div class="drop-zone" id="dropZone">Déposez ici</div>
     <button class="button" onclick="resetGame()">Rejouer</button>
+    <div class="message" id="message"></div>
 
     <script>
         const dropZone = document.getElementById("dropZone");
+        const messageDiv = document.getElementById("message");
         const correctAnswers = ["email", "link"]; // Les réponses correctes
+        let gameEnded = false;
 
         document.querySelectorAll(".drag-item").forEach(item => {
             item.addEventListener("dragstart", event => {
+                if (gameEnded) return;
                 event.dataTransfer.setData("text", event.target.id);
             });
         });
 
         dropZone.addEventListener("dragover", event => {
+            if (gameEnded) return;
             event.preventDefault();
             dropZone.classList.add("hover");
         });
 
         dropZone.addEventListener("dragleave", () => {
+            if (gameEnded) return;
             dropZone.classList.remove("hover");
         });
 
         dropZone.addEventListener("drop", event => {
+            if (gameEnded) return;
             event.preventDefault();
             dropZone.classList.remove("hover");
 
             const id = event.dataTransfer.getData("text");
             const item = document.getElementById(id);
 
+            // Vérifie si la réponse est correcte
             if (correctAnswers.includes(id)) {
                 dropZone.classList.add("correct");
                 dropZone.textContent = "Bonne réponse !";
+                messageDiv.textContent = "Bravo ! Vous avez identifié l'élément suspect.";
             } else {
                 dropZone.classList.add("incorrect");
-                dropZone.textContent = "Mauvaise réponse ! Essayez encore.";
+                dropZone.textContent = "Mauvaise réponse !";
+                messageDiv.textContent = "Explication : L'adresse email ou le lien sont suspects. L'email provient d'un domaine faux (fake-securebank.com) et le lien mène vers un site non sécurisé.";
+                gameEnded = true;
             }
 
-            // Désactiver le drag après une réponse
+            // Désactive le drag après une réponse
             item.setAttribute("draggable", false);
             item.style.opacity = "0.5";
         });
@@ -145,11 +161,14 @@
         function resetGame() {
             dropZone.className = "drop-zone";
             dropZone.textContent = "Déposez ici";
+            messageDiv.textContent = "";
 
             document.querySelectorAll(".drag-item").forEach(item => {
                 item.setAttribute("draggable", true);
                 item.style.opacity = "1";
             });
+
+            gameEnded = false;
         }
     </script>
 </body>
