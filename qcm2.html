@@ -99,36 +99,58 @@
             <p>2. Quel est le rôle d'un pare-feu ?</p>
         </div>
         <div class="options">
-            <label onclick="checkAnswer('a')">Il crypte les échanges de données entre un serveur et un utilisateur.</label>
-            <label onclick="checkAnswer('b')">Il filtre le trafic réseau pour bloquer les accès non autorisés.</label>
-            <label onclick="checkAnswer('c')">Il envoie des alertes en cas de tentative d'attaque.</label>
+            <input type="radio" id="q2a1" name="q2" value="a">
+            <label for="q2a1">Il crypte les échanges de données entre un serveur et un utilisateur.</label>
+            
+            <input type="radio" id="q2a2" name="q2" value="b">
+            <label for="q2a2">Il filtre le trafic réseau pour bloquer les accès non autorisés.</label>
+            
+            <input type="radio" id="q2a3" name="q2" value="c">
+            <label for="q2a3">Il envoie des alertes en cas de tentative d'attaque.</label>
         </div>
+
         <button class="submit-btn" onclick="checkAnswer()">Soumettre</button>
 
         <div class="result" id="result"></div>
     </div>
 
     <script>
-        function checkAnswer(answer) {
+        function checkAnswer() {
+            const radios = document.getElementsByName('q2');
+            let userAnswer = '';
+            for (const radio of radios) {
+                if (radio.checked) {
+                    userAnswer = radio.value;
+                    break;
+                }
+            }
+
             const result = document.getElementById('result');
             const options = document.querySelectorAll('.options label');
             const submitBtn = document.querySelector('.submit-btn');
 
-            // Désactiver les options après avoir cliqué
+            if (userAnswer === '') {
+                result.textContent = 'Veuillez sélectionner une réponse.';
+                result.classList.remove('correct', 'incorrect');
+                return;  // Arrêter la fonction si aucune réponse n'est sélectionnée
+            }
+
+            // Désactiver les options après avoir soumis
             options.forEach(option => option.style.pointerEvents = 'none');
 
-            // Vérifier la réponse
-            if (answer === 'b') {
+            // Afficher la réponse correcte ou incorrecte
+            if (userAnswer === 'b') {
                 result.textContent = 'Bonne réponse ! Un pare-feu filtre le trafic réseau pour bloquer les accès non autorisés.';
                 result.classList.add('correct');
                 result.classList.remove('incorrect');
-                submitBtn.disabled = true;  // Désactiver le bouton une fois la réponse donnée
             } else {
                 result.textContent = 'Mauvaise réponse ! Un pare-feu filtre le trafic réseau pour bloquer les accès non autorisés.';
                 result.classList.add('incorrect');
                 result.classList.remove('correct');
-                submitBtn.disabled = true;
             }
+
+            // Désactiver le bouton "Soumettre" après soumission
+            submitBtn.disabled = true;
         }
     </script>
 
