@@ -22,6 +22,7 @@
             height: 100vh;
             width: 100vw;
             overflow: hidden;
+            padding: 20px;
         }
 
         h1 {
@@ -34,14 +35,26 @@
             max-width: 500px;
         }
 
+        /* Conteneur principal avec flexbox */
         .table-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
             margin-bottom: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Style de chaque tableau */
+        .table-box {
+            flex: 1;
+            min-width: 45%;
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 350px;
+            overflow-x: auto;
         }
 
         table {
@@ -138,10 +151,12 @@
                 font-size: 2.5em;
             }
 
-            .table-container, .input-container {
-                width: 90%;
-                max-width: 100%;
-                margin-bottom: 15px;
+            .table-container {
+                flex-direction: column;
+            }
+
+            .table-box {
+                min-width: 100%;
             }
 
             .input-container input, button {
@@ -179,47 +194,49 @@
     <h1>Jeu de Déchiffrage Cybersécurité</h1>
 
     <div class="table-container">
-        <h2>Tableau de Chiffrement</h2>
-        <table>
-            <tr>
-                <th>Caractère</th>
-                <th>Lettre</th>
-            </tr>
-            <tr><td>@</td><td>A</td></tr>
-            <tr><td>#</td><td>B</td></tr>
-            <tr><td>$</td><td>C</td></tr>
-            <tr><td>%</td><td>D</td></tr>
-            <tr><td>&</td><td>E</td></tr>
-            <tr><td>*</td><td>F</td></tr>
-            <tr><td>+</td><td>G</td></tr>
-            <tr><td>-</td><td>H</td></tr>
-            <tr><td>_</td><td>I</td></tr>
-            <tr><td>!</td><td>J</td></tr>
-            <tr><td>^</td><td>K</td></tr>
-            <tr><td>~</td><td>L</td></tr>
-        </table>
-    </div>
+        <div class="table-box">
+            <h2>Tableau de Chiffrement</h2>
+            <table>
+                <tr>
+                    <th>Caractère</th>
+                    <th>Lettre</th>
+                </tr>
+                <tr><td>@</td><td>A</td></tr>
+                <tr><td>#</td><td>B</td></tr>
+                <tr><td>$</td><td>C</td></tr>
+                <tr><td>%</td><td>D</td></tr>
+                <tr><td>&</td><td>E</td></tr>
+                <tr><td>*</td><td>F</td></tr>
+                <tr><td>+</td><td>G</td></tr>
+                <tr><td>-</td><td>H</td></tr>
+                <tr><td>_</td><td>I</td></tr>
+                <tr><td>!</td><td>J</td></tr>
+                <tr><td>^</td><td>K</td></tr>
+                <tr><td>~</td><td>L</td></tr>
+            </table>
+        </div>
 
-    <div class="table-container">
-        <h2>Suite du Tableau de Chiffrement</h2>
-        <table>
-            <tr>
-                <th>Caractère</th>
-                <th>Lettre</th>
-            </tr>
-            <tr><td>?</td><td>M</td></tr>
-            <tr><td>/</td><td>N</td></tr>
-            <tr><td>:</td><td>O</td></tr>
-            <tr><td>;</td><td>P</td></tr>
-            <tr><td>|</td><td>Q</td></tr>
-            <tr><td>"</td><td>R</td></tr>
-            <tr><td>'</td><td>S</td></tr>
-            <tr><td>]</td><td>T</td></tr>
-            <tr><td>\\</td><td>U</td></tr>
-            <tr><td>[</td><td>V</td></tr>
-            <tr><td>,</td><td>W</td></tr>
-            <tr><td>.</td><td>X</td></tr>
-        </table>
+        <div class="table-box">
+            <h2>Suite du Tableau de Chiffrement</h2>
+            <table>
+                <tr>
+                    <th>Caractère</th>
+                    <th>Lettre</th>
+                </tr>
+                <tr><td>?</td><td>M</td></tr>
+                <tr><td>/</td><td>N</td></tr>
+                <tr><td>:</td><td>O</td></tr>
+                <tr><td>;</td><td>P</td></tr>
+                <tr><td>|</td><td>Q</td></tr>
+                <tr><td>"</td><td>R</td></tr>
+                <tr><td>'</td><td>S</td></tr>
+                <tr><td>]</td><td>T</td></tr>
+                <tr><td>\\</td><td>U</td></tr>
+                <tr><td>[</td><td>V</td></tr>
+                <tr><td>,</td><td>W</td></tr>
+                <tr><td>.</td><td>X</td></tr>
+            </table>
+        </div>
     </div>
 
     <div class="input-container">
@@ -255,42 +272,36 @@
                 resultMessage.textContent = "Bonne réponse ! Vous avez déchiffré le mot.";
                 resultMessage.className = "result correct";
                 document.querySelector(".reset-btn").classList.remove("hidden");
-                playSound(true); // Succès
+                playSound(true);
             } else {
-                if (attempts < 3) {
-                    resultMessage.textContent = `Mauvaise réponse. Vous avez encore ${3 - attempts} tentative(s).`;
-                    resultMessage.className = "result incorrect";
-                    playSound(false); // Échec
-                } else {
-                    resultMessage.textContent = `Vous avez épuisé toutes vos tentatives. Le bon code était: ${correctAnswer}`;
-                    resultMessage.className = "result incorrect";
+                resultMessage.textContent = `Mauvaise réponse. Essais restants : ${3 - attempts}`;
+                resultMessage.className = "result incorrect";
+                playSound(false);
+
+                if (attempts >= 3) {
+                    resultMessage.textContent = "Vous avez épuisé vos tentatives ! Le mot était : " + currentWord;
                     document.querySelector(".reset-btn").classList.remove("hidden");
-                    playSound(false); // Échec final
                 }
             }
         }
 
         function convertToCode(word) {
-            let code = "";
-            const conversionTable = {
-                A: "@", B: "#", C: "$", D: "%", E: "&", F: "*", G: "+", H: "-", I: "_", J: "!", 
-                K: "^", L: "~", M: "?", N: "/", O: ":", P: ";", Q: "|", R: "\"", S: "'", T: "]", 
-                U: "\\", V: "[", W: ",", X: ".", Y: "~", Z: "+"
+            // Convertit un mot en une chaîne de caractères en utilisant le tableau de chiffrement
+            const codeMap = {
+                "A": "@", "B": "#", "C": "$", "D": "%", "E": "&", "F": "*", "G": "+", "H": "-", 
+                "I": "_", "J": "!", "K": "^", "L": "~", "M": "?", "N": "/", "O": ":", "P": ";", 
+                "Q": "|", "R": "\"", "S": "'", "T": "]", "U": "\\", "V": "[", "W": ",", "X": ".", 
+                "Y": "<", "Z": ">", " ": " "
             };
-
-            for (let i = 0; i < word.length; i++) {
-                const letter = word[i].toUpperCase();
-                code += conversionTable[letter] + " ";
-            }
-            return code.trim();
+            return word.toUpperCase().split('').map(letter => codeMap[letter] || letter).join(' ');
         }
 
         function resetGame() {
-            attempts = 0;
             currentWord = generateWord();
             document.getElementById("wordToDecrypt").textContent = currentWord;
             document.getElementById("userInput").value = "";
             document.getElementById("resultMessage").textContent = "";
+            attempts = 0;
             document.querySelector(".reset-btn").classList.add("hidden");
         }
 
