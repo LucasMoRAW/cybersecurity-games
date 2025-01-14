@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeu de Déchiffrement</title>
     <style>
-        /* Thème cybersécurité */
         @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
         body {
             font-family: 'Roboto Mono', monospace;
@@ -17,45 +16,53 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
         }
 
         .container {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px;
+            justify-content: space-around;
+            align-items: flex-start;
+            gap: 40px;
+            width: 90%;
             max-width: 1200px;
-            box-sizing: border-box;
         }
 
-        .game-container, .cipher-table {
+        .game-container, .cipher-container {
             background: rgba(0, 0, 0, 0.9);
             color: #0f0;
             border: 1px solid #00ff00;
             border-radius: 15px;
             padding: 20px;
-            text-align: center;
             box-shadow: 0px 8px 20px rgba(0, 255, 0, 0.5);
+            flex: 1;
+            max-width: 500px;
         }
 
         .game-container {
-            max-width: 600px;
-            flex: 1;
+            text-align: center;
+        }
+
+        .cipher-container {
+            text-align: center;
         }
 
         .cipher-table {
-            max-width: 400px;
-            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
         }
 
         table {
             border-collapse: collapse;
-            margin: 0 auto;
             width: 100%;
             background: rgba(0, 0, 0, 0.8);
+        }
+
+        table {
+            flex: 1;
+            margin: 0 auto;
         }
 
         th, td {
@@ -125,6 +132,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- Section Jeu -->
         <div class="game-container">
             <h1>Jeu de Déchiffrement</h1>
             <h2>Mot à déchiffrer :</h2>
@@ -134,17 +142,30 @@
             <p id="resultMessage" class="result"></p>
             <button onclick="resetGame()">Rejouer</button>
         </div>
-        <div class="cipher-table">
+
+        <!-- Section Tableau -->
+        <div class="cipher-container">
             <h2>Tableau des Correspondances</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Lettre</th>
-                        <th>Caractère/Chiffre</th>
-                    </tr>
-                </thead>
-                <tbody id="cipherTableBody"></tbody>
-            </table>
+            <div class="cipher-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Lettre</th>
+                            <th>Caractère</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cipherTableBody1"></tbody>
+                </table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Lettre</th>
+                            <th>Caractère</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cipherTableBody2"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -199,10 +220,17 @@
         }
 
         function populateCipherTable() {
-            const tableBody = document.getElementById("cipherTableBody");
-            tableBody.innerHTML = Object.entries(cipherMap).map(([letter, code]) => 
-                `<tr><td>${letter}</td><td>${code}</td></tr>`
-            ).join('');
+            const tableBody1 = document.getElementById("cipherTableBody1");
+            const tableBody2 = document.getElementById("cipherTableBody2");
+            const entries = Object.entries(cipherMap);
+
+            entries.slice(0, Math.ceil(entries.length / 2)).forEach(([letter, code]) => {
+                tableBody1.innerHTML += `<tr><td>${letter}</td><td>${code}</td></tr>`;
+            });
+
+            entries.slice(Math.ceil(entries.length / 2)).forEach(([letter, code]) => {
+                tableBody2.innerHTML += `<tr><td>${letter}</td><td>${code}</td></tr>`;
+            });
         }
 
         document.getElementById("wordToDecrypt").textContent = cipherWord;
