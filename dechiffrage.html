@@ -134,14 +134,15 @@
             return words[Math.floor(Math.random() * words.length)];
         }
 
+        // Déclenche le décalage entre -6 et +6
         function generateShift() {
-            return Math.floor(Math.random() * 25) + 1; // Décalage entre 1 et 25
+            return Math.floor(Math.random() * 13) - 6; // Décalage entre -6 et +6
         }
 
         function applyShift(word, shift) {
             return word.split('').map(char => {
                 if (!alphabet.includes(char)) return char;
-                let newIndex = (alphabet.indexOf(char) + shift) % alphabet.length;
+                let newIndex = (alphabet.indexOf(char) + shift + alphabet.length) % alphabet.length;
                 return alphabet[newIndex];
             }).join('');
         }
