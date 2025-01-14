@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeu de Déchiffrage - Amélioré</title>
+    <title>Jeu de Déchiffrage</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -102,7 +102,7 @@
 </head>
 <body>
 
-    <h1>Jeu de Déchiffrage - Amélioré</h1>
+    <h1>Jeu de Déchiffrage</h1>
 
     <div class="table-container">
         <h2>Tableau de Chiffrement</h2>
@@ -155,7 +155,8 @@
     </div>
 
     <div class="input-container">
-        <p>Entrez le code à déchiffrer (par exemple: 1 2 3 pour ABC) :</p>
+        <p>Déchiffrez le mot : <span id="wordToDecrypt" style="font-weight: bold; font-size: 1.3em;"></span></p>
+        <p>Entrez les numéros correspondants aux lettres (séparés par des espaces) :</p>
         <input type="text" id="userInput" placeholder="Entrez votre code ici">
     </div>
 
@@ -165,37 +166,34 @@
     <div class="result" id="resultMessage"></div>
 
     <script>
-        const maxAttempts = 3; // Nombre maximum d'essais avant de passer à un nouveau code
-        let currentCode = generateCode();
+        const words = ["ABCD", "EFGH", "IJKL", "ABCDE", "GHIJK"];  // Liste de mots à déchiffrer
+        let currentWord = generateWord();
         let attempts = 0;
 
-        function generateCode() {
-            // Génère un code aléatoire de 5 numéros entre 1 et 10
-            let code = "";
-            for (let i = 0; i < 5; i++) {
-                code += Math.floor(Math.random() * 10) + 1 + " ";
-            }
-            return code.trim();
+        function generateWord() {
+            // Choisit un mot aléatoire de la liste
+            return words[Math.floor(Math.random() * words.length)];
         }
 
         function checkAnswer() {
             const userInput = document.getElementById("userInput").value.trim();
             const resultMessage = document.getElementById("resultMessage");
+            const correctAnswer = convertToCode(currentWord);
 
             attempts++;
 
-            if (userInput === currentCode) {
-                resultMessage.textContent = "Bonne réponse ! Vous avez déchiffré le code.";
+            if (userInput === correctAnswer) {
+                resultMessage.textContent = "Bonne réponse ! Vous avez déchiffré le mot.";
                 resultMessage.className = "result correct";
                 document.querySelector(".reset-btn").classList.remove("hidden");
                 playSound(true); // Succès
             } else {
-                if (attempts < maxAttempts) {
-                    resultMessage.textContent = `Mauvaise réponse. Vous avez encore ${maxAttempts - attempts} tentative(s).`;
+                if (attempts < 3) {
+                    resultMessage.textContent = `Mauvaise réponse. Vous avez encore ${3 - attempts} tentative(s).`;
                     resultMessage.className = "result incorrect";
                     playSound(false); // Échec
                 } else {
-                    resultMessage.textContent = "Vous avez épuisé toutes vos tentatives. Le bon code était: " + currentCode;
+                    resultMessage.textContent = `Vous avez épuisé toutes vos tentatives. Le bon code était: ${correctAnswer}`;
                     resultMessage.className = "result incorrect";
                     document.querySelector(".reset-btn").classList.remove("hidden");
                     playSound(false); // Échec final
@@ -203,9 +201,20 @@
             }
         }
 
+        function convertToCode(word) {
+            let code = "";
+            for (let i = 0; i < word.length; i++) {
+                const letter = word[i].toUpperCase();
+                const letterCode = letter.charCodeAt(0) - 65 + 1;
+                code += letterCode + " ";
+            }
+            return code.trim();
+        }
+
         function resetGame() {
             attempts = 0;
-            currentCode = generateCode();
+            currentWord = generateWord();
+            document.getElementById("wordToDecrypt").textContent = currentWord;
             document.getElementById("userInput").value = "";
             document.getElementById("resultMessage").textContent = "";
             document.querySelector(".reset-btn").classList.add("hidden");
@@ -215,6 +224,9 @@
             const audio = new Audio(isCorrect ? "https://www.soundjay.com/button/beep-07.wav" : "https://www.soundjay.com/button/beep-08b.wav");
             audio.play();
         }
+
+        // Affiche le mot à déchiffrer au début du jeu
+        document.getElementById("wordToDecrypt").textContent = currentWord;
     </script>
 
 </body>
