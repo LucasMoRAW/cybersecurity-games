@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QCM Cybersécurité - Question 2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .code-block {
+            background-color: #222;
+            color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: monospace;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>QCM Cybersécurité - Question 2</h1>
+    <div class="question">
+        <p>Voici un extrait de code Python. Que fait ce programme ?</p>
+        <pre class="code-block">
+import hashlib
+
+def check_password(input_password, stored_hash):
+    input_hash = hashlib.sha256(input_password.encode()).hexdigest()
+    return input_hash == stored_hash
+
+stored_password_hash = "6c8e8f2a4f68fd8b4013ba711db55e620c5c660d1565dbb1b06e8f1c6c8d61f3"
+input_password = "password123"
+if check_password(input_password, stored_password_hash):
+    print("Mot de passe correct")
+else:
+    print("Mot de passe incorrect")
+        </pre>
+        <form id="qcm2" onsubmit="return checkAnswer('qcm2', 'B', 'Le programme compare le mot de passe entré avec un hachage stocké pour vérifier sa validité.')">
+            <input type="radio" id="optionA2" name="answer2" value="A">
+            <label for="optionA2">A - Il vérifie si un mot de passe correspond à un mot de passe stocké sous forme chiffrée.</label><br>
+            <input type="radio" id="optionB2" name="answer2" value="B">
+            <label for="optionB2">B - Il vérifie si un mot de passe est valide en le comparant avec un mot de passe stocké sous forme de hachage.</label><br>
+            <input type="radio" id="optionC2" name="answer2" value="C">
+            <label for="optionC2">C - Il crypte un mot de passe en utilisant un algorithme de chiffrement asymétrique.</label><br>
+            <input type="radio" id="optionD2" name="answer2" value="D">
+            <label for="optionD2">D - Il vérifie si un mot de passe correspond à un mot de passe en clair dans une base de données.</label><br>
+            <button type="submit">Valider</button>
+        </form>
+        <div class="result" id="result2"></div>
+        <a href="qcm3.html">Question suivante</a>
+    </div>
+
+    <script>
+        function checkAnswer(formId, correctAnswer, explanation) {
+            const form = document.getElementById(formId);
+            const selected = form.querySelector('input[name="answer2"]:checked');
+            const result = document.getElementById('result2');
+
+            if (!selected) {
+                result.textContent = "Veuillez sélectionner une réponse.";
+                result.style.color = "red";
+                return false;
+            }
+
+            if (selected.value === correctAnswer) {
+                result.textContent = "Bonne réponse ! " + explanation;
+                result.style.color = "green";
+            } else {
+                result.textContent = "Mauvaise réponse. " + explanation;
+                result.style.color = "red";
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>
