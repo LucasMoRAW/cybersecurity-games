@@ -3,273 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeu de Déchiffrage Cybersécurité</title>
+    <title>Jeu de Déchiffrement</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* Général */
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #2e7d32, #004d40);
+            color: #fff;
+            text-align: center;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            padding: 20px;
         }
-
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
+        .game-container {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border-radius: 15px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 30px;
             text-align: center;
-            color: #4CAF50;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-            width: 90%;
-            max-width: 500px;
         }
-
-        .table-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 20px;
-            width: 100%;
-            max-width: 1200px;
+        h1, h2 {
+            color: #004d40;
         }
-
-        .table-box {
-            flex: 1;
-            min-width: 45%;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            overflow-x: auto;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
+            margin: 20px 0;
         }
-
-        table th, table td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: center;
-            font-size: 1.1em;
-            background-color: #f8f8f8;
-        }
-
-        .input-container {
-            margin-bottom: 20px;
-            width: 90%;
-            max-width: 400px;
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-size: 1.1rem;
             text-align: center;
         }
-
-        .input-container input {
-            padding: 12px;
-            font-size: 1.2em;
-            width: 100%;
-            border-radius: 5px;
-            border: 2px solid #4CAF50;
-            margin-top: 10px;
-            transition: all 0.3s;
+        th {
+            background-color: #004d40;
+            color: #fff;
         }
-
-        .input-container input:focus {
-            outline: none;
-            border-color: #66bb6a;
+        td {
+            background-color: #e8f5e9;
         }
-
-        button {
-            padding: 12px 20px;
-            background-color: #4CAF50;
-            color: white;
+        .cipher-word {
+            font-family: 'Courier New', monospace;
+            font-size: 1.5rem;
+            background: #004d40;
+            color: #fff;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 20px auto;
+            display: inline-block;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        input, button {
+            font-size: 1rem;
+            padding: 10px 20px;
+            margin: 10px 5px;
             border: none;
             border-radius: 5px;
-            font-size: 1.2em;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        input {
+            width: 80%;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #004d40;
+            color: #fff;
             cursor: pointer;
-            transition: background-color 0.3s;
-            width: 100%;
-            margin-top: 10px;
         }
-
         button:hover {
-            background-color: #45a049;
+            background-color: #2e7d32;
         }
-
         .result {
-            font-size: 1.3em;
-            font-weight: bold;
-            margin-top: 15px;
-            width: 100%;
-            text-align: center;
+            margin: 15px 0;
+            font-size: 1.2rem;
         }
-
-        .correct {
+        .result.correct {
             color: green;
         }
-
-        .incorrect {
+        .result.incorrect {
             color: red;
         }
-
-        .reset-btn {
-            background-color: #f44336;
-        }
-
-        .reset-btn:hover {
-            background-color: #e53935;
-        }
-
-        .hidden {
+        .reset-btn.hidden {
             display: none;
         }
-
-        .cyber-theme {
-            font-family: 'Courier New', monospace;
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5em;
-            }
-
-            .table-container {
-                flex-direction: column;
-            }
-
-            .table-box {
-                min-width: 100%;
-            }
-
-            .input-container input, button {
-                font-size: 1.1em;
-            }
-
-            .result {
-                font-size: 1.1em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 2em;
-            }
-
-            table th, table td {
-                padding: 10px;
-                font-size: 1em;
-            }
-
-            .input-container input, button {
-                font-size: 1em;
-            }
-
-            .result {
-                font-size: 1em;
-            }
-        }
-
     </style>
 </head>
 <body>
+    <div class="game-container">
+        <h1>Jeu de Déchiffrement</h1>
+        <p>Utilisez le tableau ci-dessous pour déchiffrer le mot codé.</p>
+        
+        <h2>Mot à déchiffrer :</h2>
+        <div id="wordToDecrypt" class="cipher-word"></div>
+        
+        <label for="userInput">Entrez votre déchiffrement :</label><br>
+        <input type="text" id="userInput">
+        <button onclick="checkAnswer()">Valider</button>
+        <p id="resultMessage" class="result"></p>
+        <button class="reset-btn hidden" onclick="resetGame()">Rejouer</button>
 
-    <h1>Jeu de Déchiffrage Cybersécurité</h1>
-
-    <div class="table-container">
-        <div class="table-box">
-            <h2>Tableau de Chiffrement</h2>
-            <table>
-                <tr><th>Caractère</th><th>Lettre</th></tr>
-                <tr><td>@</td><td>A</td></tr>
-                <tr><td>#</td><td>B</td></tr>
-                <tr><td>$</td><td>C</td></tr>
-                <tr><td>%</td><td>D</td></tr>
-                <tr><td>&</td><td>E</td></tr>
-                <tr><td>*</td><td>F</td></tr>
-                <tr><td>+</td><td>G</td></tr>
-                <tr><td>-</td><td>H</td></tr>
-                <tr><td>_</td><td>I</td></tr>
-                <tr><td>!</td><td>J</td></tr>
-                <tr><td>^</td><td>K</td></tr>
-                <tr><td>~</td><td>L</td></tr>
-                <tr><td>?</td><td>M</td></tr>
-                <tr><td>/</td><td>N</td></tr>
-                <tr><td>:</td><td>O</td></tr>
-            </table>
-        </div>
-
-        <div class="table-box">
-            <h2>Suite du Tableau de Chiffrement</h2>
-            <table>
-                <tr><th>Caractère</th><th>Lettre</th></tr>
-                <tr><td>;</td><td>P</td></tr>
-                <tr><td>|</td><td>Q</td></tr>
-                <tr><td>"</td><td>R</td></tr>
-                <tr><td>'</td><td>S</td></tr>
-                <tr><td>]</td><td>T</td></tr>
-                <tr><td>\\</td><td>U</td></tr>
-                <tr><td>[</td><td>V</td></tr>
-                <tr><td>,</td><td>W</td></tr>
-                <tr><td>.</td><td>X</td></tr>
-                <tr><td>&lt;</td><td>Y</td></tr>
-                <tr><td>&gt;</td><td>Z</td></tr>
-                <tr><td> </td><td> </td></tr>
-            </table>
-        </div>
+        <h2>Tableau de chiffrement</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Lettre</th>
+                    <th>Code</th>
+                </tr>
+            </thead>
+            <tbody id="cipherTable"></tbody>
+        </table>
     </div>
-
-    <div class="input-container">
-        <p>Déchiffrez le mot suivant : <span id="wordToDecrypt" class="cyber-theme"></span></p>
-        <p>Entrez les caractères correspondant aux lettres du mot (séparés par des espaces) :</p>
-        <input type="text" id="userInput" placeholder="Entrez votre code ici">
-    </div>
-
-    <button onclick="checkAnswer()">Vérifier</button>
-    <button class="reset-btn hidden" onclick="resetGame()">Recommencer</button>
-
-    <div class="result" id="resultMessage"></div>
 
     <script>
-        // Liste de mots en rapport avec la cybersécurité
-        const words = ["Cryptage", "Hacker", "Firewall", "Phishing", "Trojan", "Malware", "Encryption", "Phreaking"];
+        // Tableau de chiffrement : A-M => caractères spéciaux, N-Z => chiffres
+        const cipherMap = {
+            "A": "@", "B": "#", "C": "$", "D": "%", "E": "&", "F": "*", "G": "+", 
+            "H": "-", "I": "_", "J": "!", "K": "^", "L": "~", "M": "?",
+            "N": "1", "O": "2", "P": "3", "Q": "4", "R": "5", "S": "6", 
+            "T": "7", "U": "8", "V": "9", "W": "0", "X": "11", "Y": "12", "Z": "13"
+        };
+
+        // Variables globales
         let currentWord = generateWord();
         let attempts = 0;
 
+        // Génère un mot aléatoire à partir d'une liste
         function generateWord() {
-            // Choisit un mot aléatoire de la liste
-            return words[Math.floor(Math.random() * words.length)];
+            const words = ["CYBERSECURITE", "DECHIFFRER", "INTERNET", "SECURITE", "CRYPTAGE"];
+            const randomWord = words[Math.floor(Math.random() * words.length)];
+            return convertToCode(randomWord);
+        }
+
+        // Affiche le tableau de chiffrement dans le HTML
+        function displayCipherTable() {
+            const tableBody = document.getElementById("cipherTable");
+            Object.entries(cipherMap).forEach(([letter, code]) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td>${letter}</td><td>${code}</td>`;
+                tableBody.appendChild(row);
+            });
         }
 
         function checkAnswer() {
-            const userInput = document.getElementById("userInput").value.trim();
+            const userInput = document.getElementById("userInput").value.toUpperCase();
             const resultMessage = document.getElementById("resultMessage");
-            const correctAnswer = convertToCode(currentWord);
 
-            attempts++;
-
-            if (userInput === correctAnswer) {
-                resultMessage.textContent = "Bonne réponse ! Vous avez déchiffré le mot.";
+            if (userInput === currentWord) {
+                resultMessage.textContent = "Bravo ! Vous avez trouvé le bon mot.";
                 resultMessage.className = "result correct";
                 document.querySelector(".reset-btn").classList.remove("hidden");
-                playSound(true);
             } else {
+                attempts++;
                 resultMessage.textContent = `Mauvaise réponse. Essais restants : ${3 - attempts}`;
                 resultMessage.className = "result incorrect";
-                playSound(false);
 
                 if (attempts >= 3) {
                     resultMessage.textContent = "Vous avez épuisé vos tentatives ! Le mot était : " + currentWord;
@@ -279,14 +172,7 @@
         }
 
         function convertToCode(word) {
-            // Convertit un mot en une chaîne de caractères en utilisant le tableau de chiffrement
-            const codeMap = {
-                "A": "@", "B": "#", "C": "$", "D": "%", "E": "&", "F": "*", "G": "+", "H": "-", 
-                "I": "_", "J": "!", "K": "^", "L": "~", "M": "?", "N": "/", "O": ":", "P": ";", 
-                "Q": "|", "R": "\"", "S": "'", "T": "]", "U": "\\", "V": "[", "W": ",", "X": ".", 
-                "Y": "<", "Z": ">", " ": " "
-            };
-            return word.toUpperCase().split('').map(letter => codeMap[letter] || letter).join(' ');
+            return word.toUpperCase().split('').map(letter => cipherMap[letter] || letter).join(' ');
         }
 
         function resetGame() {
@@ -298,12 +184,8 @@
             document.querySelector(".reset-btn").classList.add("hidden");
         }
 
-        function playSound(success) {
-            const audio = new Audio(success ? 'success.mp3' : 'error.mp3');
-            audio.play();
-        }
-
         // Initialise le jeu
+        displayCipherTable();
         document.getElementById("wordToDecrypt").textContent = currentWord;
     </script>
 </body>
