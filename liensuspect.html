@@ -3,145 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Défi Cybersécurité - Question 1</title>
+    <title>QCM - Cybersécurité : Lien Suspect</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: #f4f7f6;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background: linear-gradient(to left, #ffcc00, #ff6699);
+            color: white;
+            text-align: center;
         }
         h1 {
-            text-align: center;
-            color: #333;
-            font-size: 2em;
-            margin-bottom: 20px;
+            margin-top: 20px;
         }
         .question-container {
-            background-color: #fff;
-            border-radius: 10px;
+            background-color: #333;
+            border-radius: 8px;
             padding: 30px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-        .question-container:hover {
-            transform: scale(1.05);
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
         }
         .question {
-            font-size: 18px;
+            font-size: 22px;
             margin-bottom: 20px;
-            color: #333;
         }
-        .options {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .options label {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 25px;
-            margin: 10px;
-            border-radius: 8px;
-            width: 80%;
-            text-align: center;
-            font-size: 16px;
-            cursor: pointer;
-            box-sizing: border-box;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-        .options label:hover {
-            background-color: #45a049;
-            transform: scale(1.05);
-        }
-        .options label:active {
-            transform: scale(0.95);
-        }
-        .submit-btn {
-            background-color: #2196F3;
-            color: white;
-            padding: 12px 25px;
+        .answer-button {
+            background-color: #2980b9;
             border: none;
-            border-radius: 5px;
-            margin-top: 20px;
+            color: white;
+            padding: 15px 30px;
             font-size: 18px;
+            margin: 10px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            border-radius: 8px;
+            transition: 0.3s;
         }
-        .submit-btn:hover {
-            background-color: #1976D2;
+        .answer-button:hover {
+            background-color: #3498db;
         }
-        .result {
-            font-size: 1.2em;
+        .answer-button:active {
+            background-color: #2980b9;
+        }
+        .message {
+            font-size: 20px;
             margin-top: 20px;
-            font-weight: bold;
-        }
-        .correct {
-            color: green;
-        }
-        .incorrect {
-            color: red;
         }
     </style>
 </head>
 <body>
-
+    <h1>Défi Cybersécurité : Lien Suspect</h1>
     <div class="question-container">
-        <h1>Défi Cybersécurité</h1>
-        <div class="question">
-            <p>1. Qu'est-ce que le phishing ?</p>
-        </div>
-        <div class="options">
-            <label onclick="checkAnswer('a')">Une tentative de fraude pour voler des informations sensibles.</label>
-            <label onclick="checkAnswer('b')">Un logiciel malveillant qui chiffre des fichiers.</label>
-            <label onclick="checkAnswer('c')">Une méthode d'authentification à deux facteurs.</label>
-        </div>
-        <button class="submit-btn" onclick="finishQuiz()">Soumettre</button>
-
-        <div class="result" id="result"></div>
+        <p class="question">Quel élément suspect détectez-vous dans ce lien ?</p>
+        <button class="answer-button" onclick="checkAnswer('correct')">Lien Non Sécurisé</button>
+        <button class="answer-button" onclick="checkAnswer('incorrect')">Texte du Lien</button>
+        <button class="answer-button" onclick="checkAnswer('incorrect')">Raccourci Lien</button>
+        <button class="answer-button" onclick="checkAnswer('incorrect')">Le Domaine</button>
+        <div class="message" id="message"></div>
     </div>
 
     <script>
-        let answerSelected = false;  // Variable pour savoir si une réponse a été sélectionnée
-
         function checkAnswer(answer) {
-            const result = document.getElementById('result');
-            const options = document.querySelectorAll('.options label');
-            const submitBtn = document.querySelector('.submit-btn');
-            answerSelected = true;  // Marquer qu'une réponse a été sélectionnée
-
-            // Désactiver les options après avoir cliqué
-            options.forEach(option => option.style.pointerEvents = 'none');
-
-            // Vérifier la réponse
-            if (answer === 'a') {
-                result.textContent = 'Bonne réponse ! Le phishing est bien une tentative de fraude pour voler des informations sensibles.';
-                result.classList.add('correct');
-                result.classList.remove('incorrect');
-                submitBtn.disabled = true;  // Désactiver le bouton une fois la réponse donnée
+            const message = document.getElementById("message");
+            if (answer === 'correct') {
+                message.textContent = "Bonne réponse ! Le lien n'est pas sécurisé.";
+                message.style.color = "#4CAF50";
             } else {
-                result.textContent = 'Mauvaise réponse ! Le phishing est une tentative de fraude pour voler des informations sensibles.';
-                result.classList.add('incorrect');
-                result.classList.remove('correct');
-                submitBtn.disabled = true;
-            }
-        }
-
-        function finishQuiz() {
-            if (!answerSelected) {
-                alert("Veuillez sélectionner une réponse avant de soumettre.");
-            } else {
-                alert("Réponse soumise.");
+                message.textContent = "Mauvaise réponse ! Le lien n'est pas sécurisé.";
+                message.style.color = "#e74c3c";
             }
         }
     </script>
-
 </body>
 </html>
