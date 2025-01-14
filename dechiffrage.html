@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeu de Déchiffrement</title>
+    <title>Jeu de Déchiffrement par Décalage</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
         body {
@@ -29,7 +29,7 @@
             max-width: 1200px;
         }
 
-        .game-container, .cipher-container {
+        .game-container, .info-container {
             background: rgba(0, 0, 0, 0.9);
             color: #0f0;
             border: 1px solid #00ff00;
@@ -44,36 +44,8 @@
             text-align: center;
         }
 
-        .cipher-container {
+        .info-container {
             text-align: center;
-        }
-
-        .cipher-table {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.8);
-        }
-
-        table {
-            flex: 1;
-            margin: 0 auto;
-        }
-
-        th, td {
-            border: 1px solid #00ff00;
-            padding: 8px 12px;
-            text-align: center;
-            color: #0f0;
-        }
-
-        th {
-            background-color: #001a00;
         }
 
         .cipher-word {
@@ -137,50 +109,20 @@
             <h1>Jeu de Déchiffrement</h1>
             <h2>Mot à déchiffrer :</h2>
             <div id="wordToDecrypt" class="cipher-word"></div>
+            <p>Décalage : <span id="shiftAmount"></span></p>
             <input type="text" id="userInput" placeholder="Entrez le mot clair">
             <button onclick="checkAnswer()">Valider</button>
             <p id="resultMessage" class="result"></p>
             <button onclick="resetGame()">Rejouer</button>
         </div>
-
-        <!-- Section Tableau -->
-        <div class="cipher-container">
-            <h2>Tableau des Correspondances</h2>
-            <div class="cipher-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Lettre</th>
-                            <th>Caractère</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cipherTableBody1"></tbody>
-                </table>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Lettre</th>
-                            <th>Caractère</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cipherTableBody2"></tbody>
-                </table>
-            </div>
-        </div>
     </div>
 
     <script>
-        const cipherMap = {
-            "A": "@", "B": "#", "C": "$", "D": "%", "E": "&", "F": "*", "G": "+", 
-            "H": "-", "I": "_", "J": "!", "K": "^", "L": "~", "M": "?",
-            "N": "1", "O": "2", "P": "3", "Q": "4", "R": "5", "S": "6", 
-            "T": "7", "U": "8", "V": "9", "W": "0", "X": "11", "Y": "12", "Z": "13"
-        };
-
-        const reverseCipherMap = Object.fromEntries(Object.entries(cipherMap).map(([key, value]) => [value, key]));
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         let plainWord = generateWord();
-        let cipherWord = convertToCode(plainWord);
+        let shift = generateShift();
+        let cipherWord = applyShift(plainWord, shift);
 
         function generateWord() {
             const words = [
@@ -192,13 +134,29 @@
             return words[Math.floor(Math.random() * words.length)];
         }
 
-        function convertToCode(word) {
-            return word.toUpperCase().split('').map(letter => cipherMap[letter] || letter).join(' ');
+        function generateShift() {
+            return Math.floor(Math.random() * 25) + 1; // Décalage entre 1 et 25
+        }
+
+        function applyShift(word, shift) {
+            return word.split('').map(char => {
+                if (!alphabet.includes(char)) return char;
+                let newIndex = (alphabet.indexOf(char) + shift) % alphabet.length;
+                return alphabet[newIndex];
+            }).join('');
+        }
+
+        function reverseShift(cipherWord, shift) {
+            return cipherWord.split('').map(char => {
+                if (!alphabet.includes(char)) return char;
+                let newIndex = (alphabet.indexOf(char) - shift + alphabet.length) % alphabet.length;
+                return alphabet[newIndex];
+            }).join('');
         }
 
         function checkAnswer() {
             const userInput = document.getElementById("userInput").value.trim().toUpperCase();
-            const decodedWord = cipherWord.split(/\s+/).map(code => reverseCipherMap[code] || '?').join('');
+            const decodedWord = reverseShift(cipherWord, shift);
 
             const resultMessage = document.getElementById("resultMessage");
 
@@ -213,28 +171,16 @@
 
         function resetGame() {
             plainWord = generateWord();
-            cipherWord = convertToCode(plainWord);
+            shift = generateShift();
+            cipherWord = applyShift(plainWord, shift);
             document.getElementById("wordToDecrypt").textContent = cipherWord;
+            document.getElementById("shiftAmount").textContent = shift;
             document.getElementById("userInput").value = "";
             document.getElementById("resultMessage").textContent = "";
         }
 
-        function populateCipherTable() {
-            const tableBody1 = document.getElementById("cipherTableBody1");
-            const tableBody2 = document.getElementById("cipherTableBody2");
-            const entries = Object.entries(cipherMap);
-
-            entries.slice(0, Math.ceil(entries.length / 2)).forEach(([letter, code]) => {
-                tableBody1.innerHTML += `<tr><td>${letter}</td><td>${code}</td></tr>`;
-            });
-
-            entries.slice(Math.ceil(entries.length / 2)).forEach(([letter, code]) => {
-                tableBody2.innerHTML += `<tr><td>${letter}</td><td>${code}</td></tr>`;
-            });
-        }
-
         document.getElementById("wordToDecrypt").textContent = cipherWord;
-        populateCipherTable();
+        document.getElementById("shiftAmount").textContent = shift;
     </script>
 </body>
 </html>
