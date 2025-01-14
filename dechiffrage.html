@@ -153,11 +153,15 @@
             });
         }
 
+        // Vérifie la réponse de l'utilisateur
         function checkAnswer() {
-            const userInput = document.getElementById("userInput").value.toUpperCase();
+            const userInput = document.getElementById("userInput").value.trim().toUpperCase();
             const resultMessage = document.getElementById("resultMessage");
 
-            if (userInput === plainWord) {
+            // Convertit l'entrée utilisateur en mot clair
+            const decodedInput = userInput.split(' ').map(code => reverseCipherMap[code] || '?').join('');
+
+            if (decodedInput === plainWord) {
                 resultMessage.textContent = "Bravo ! Vous avez trouvé le bon mot.";
                 resultMessage.className = "result correct";
                 document.querySelector(".reset-btn").classList.remove("hidden");
