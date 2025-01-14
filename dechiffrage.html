@@ -138,41 +138,49 @@
         <h2>Tableau de Chiffrement</h2>
         <table>
             <tr>
-                <th>Numéro</th>
+                <th>Caractère</th>
                 <th>Lettre</th>
             </tr>
-            <tr><td>1</td><td>A</td></tr>
-            <tr><td>2</td><td>B</td></tr>
-            <tr><td>3</td><td>C</td></tr>
-            <tr><td>4</td><td>D</td></tr>
-            <tr><td>5</td><td>E</td></tr>
-            <tr><td>6</td><td>F</td></tr>
-            <tr><td>7</td><td>G</td></tr>
-            <tr><td>8</td><td>H</td></tr>
-            <tr><td>9</td><td>I</td></tr>
-            <tr><td>10</td><td>J</td></tr>
-            <tr><td>11</td><td>K</td></tr>
-            <tr><td>12</td><td>L</td></tr>
-            <tr><td>13</td><td>M</td></tr>
-            <tr><td>14</td><td>N</td></tr>
-            <tr><td>15</td><td>O</td></tr>
-            <tr><td>16</td><td>P</td></tr>
-            <tr><td>17</td><td>Q</td></tr>
-            <tr><td>18</td><td>R</td></tr>
-            <tr><td>19</td><td>S</td></tr>
-            <tr><td>20</td><td>T</td></tr>
-            <tr><td>21</td><td>U</td></tr>
-            <tr><td>22</td><td>V</td></tr>
-            <tr><td>23</td><td>W</td></tr>
-            <tr><td>24</td><td>X</td></tr>
-            <tr><td>25</td><td>Y</td></tr>
-            <tr><td>26</td><td>Z</td></tr>
+            <tr><td>@</td><td>A</td></tr>
+            <tr><td>#</td><td>B</td></tr>
+            <tr><td>$</td><td>C</td></tr>
+            <tr><td>%</td><td>D</td></tr>
+            <tr><td>&</td><td>E</td></tr>
+            <tr><td>*</td><td>F</td></tr>
+            <tr><td>+</td><td>G</td></tr>
+            <tr><td>-</td><td>H</td></tr>
+            <tr><td>_</td><td>I</td></tr>
+            <tr><td>!</td><td>J</td></tr>
+            <tr><td>^</td><td>K</td></tr>
+            <tr><td>~</td><td>L</td></tr>
+        </table>
+    </div>
+
+    <div class="table-container">
+        <h2>Suite du Tableau de Chiffrement</h2>
+        <table>
+            <tr>
+                <th>Caractère</th>
+                <th>Lettre</th>
+            </tr>
+            <tr><td>?</td><td>M</td></tr>
+            <tr><td>/</td><td>N</td></tr>
+            <tr><td>:</td><td>O</td></tr>
+            <tr><td>; </td><td>P</td></tr>
+            <tr><td>|</td><td>Q</td></tr>
+            <tr><td>"</td><td>R</td></tr>
+            <tr><td>'</td><td>S</td></tr>
+            <tr><td>]</td><td>T</td></tr>
+            <tr><td>\\</td><td>U</td></tr>
+            <tr><td>[</td><td>V</td></tr>
+            <tr><td>,</td><td>W</td></tr>
+            <tr><td>.</td><td>X</td></tr>
         </table>
     </div>
 
     <div class="input-container">
         <p>Déchiffrez le mot suivant : <span id="wordToDecrypt" class="cyber-theme"></span></p>
-        <p>Entrez les numéros correspondant aux lettres du mot (séparés par des espaces) :</p>
+        <p>Entrez les caractères correspondant aux lettres du mot (séparés par des espaces) :</p>
         <input type="text" id="userInput" placeholder="Entrez votre code ici">
     </div>
 
@@ -220,10 +228,15 @@
 
         function convertToCode(word) {
             let code = "";
+            const conversionTable = {
+                A: "@", B: "#", C: "$", D: "%", E: "&", F: "*", G: "+", H: "-", I: "_", J: "!", 
+                K: "^", L: "~", M: "?", N: "/", O: ":", P: ";", Q: "|", R: "\"", S: "'", T: "]", 
+                U: "\\", V: "[", W: ",", X: ".", Y: "~", Z: "+"
+            };
+
             for (let i = 0; i < word.length; i++) {
                 const letter = word[i].toUpperCase();
-                const letterCode = letter.charCodeAt(0) - 65 + 1;
-                code += letterCode + " ";
+                code += conversionTable[letter] + " ";
             }
             return code.trim();
         }
