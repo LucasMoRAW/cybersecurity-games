@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeu de Déchiffrage Cybersécurité</title>
     <style>
-        /* Réinitialisation des marges et paddings */
         * {
             margin: 0;
             padding: 0;
@@ -35,7 +34,6 @@
             max-width: 500px;
         }
 
-        /* Conteneur principal avec flexbox */
         .table-container {
             display: flex;
             flex-wrap: wrap;
@@ -46,7 +44,6 @@
             max-width: 1200px;
         }
 
-        /* Style de chaque tableau */
         .table-box {
             flex: 1;
             min-width: 45%;
@@ -145,7 +142,6 @@
             border-radius: 5px;
         }
 
-        /* Responsive design */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.5em;
@@ -197,10 +193,7 @@
         <div class="table-box">
             <h2>Tableau de Chiffrement</h2>
             <table>
-                <tr>
-                    <th>Caractère</th>
-                    <th>Lettre</th>
-                </tr>
+                <tr><th>Caractère</th><th>Lettre</th></tr>
                 <tr><td>@</td><td>A</td></tr>
                 <tr><td>#</td><td>B</td></tr>
                 <tr><td>$</td><td>C</td></tr>
@@ -213,19 +206,16 @@
                 <tr><td>!</td><td>J</td></tr>
                 <tr><td>^</td><td>K</td></tr>
                 <tr><td>~</td><td>L</td></tr>
+                <tr><td>?</td><td>M</td></tr>
+                <tr><td>/</td><td>N</td></tr>
+                <tr><td>:</td><td>O</td></tr>
             </table>
         </div>
 
         <div class="table-box">
             <h2>Suite du Tableau de Chiffrement</h2>
             <table>
-                <tr>
-                    <th>Caractère</th>
-                    <th>Lettre</th>
-                </tr>
-                <tr><td>?</td><td>M</td></tr>
-                <tr><td>/</td><td>N</td></tr>
-                <tr><td>:</td><td>O</td></tr>
+                <tr><th>Caractère</th><th>Lettre</th></tr>
                 <tr><td>;</td><td>P</td></tr>
                 <tr><td>|</td><td>Q</td></tr>
                 <tr><td>"</td><td>R</td></tr>
@@ -235,6 +225,9 @@
                 <tr><td>[</td><td>V</td></tr>
                 <tr><td>,</td><td>W</td></tr>
                 <tr><td>.</td><td>X</td></tr>
+                <tr><td>&lt;</td><td>Y</td></tr>
+                <tr><td>&gt;</td><td>Z</td></tr>
+                <tr><td> </td><td> </td></tr>
             </table>
         </div>
     </div>
