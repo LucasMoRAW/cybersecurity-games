@@ -6,7 +6,6 @@
     <title>Jeu de Déchiffrement par Décalage</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap'); /* Nouvelle police */
 
         body {
             font-family: 'Roboto Mono', monospace;
@@ -70,18 +69,12 @@
         }
 
         input, button {
-            font-family: 'Poppins', sans-serif; /* Nouvelle police pour les boutons */
-            font-weight: 600;
             font-size: 1rem;
-            padding: 12px 24px;
+            padding: 10px 20px;
             margin: 10px 5px;
             border: none;
-            border-radius: 8px;
-            background: linear-gradient(145deg, #4caf50, #388e3c);
-            color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-            transition: background 0.3s, transform 0.2s ease, box-shadow 0.2s ease;
-            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
         }
 
         input {
@@ -90,15 +83,14 @@
             border: 2px solid #00ff00;
         }
 
-        button:hover {
-            background: linear-gradient(145deg, #388e3c, #4caf50);
-            transform: translateY(-2px); /* Effet de survol */
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.15);
+        button {
+            background-color: #004d40;
+            color: #fff;
+            cursor: pointer;
         }
 
-        button:active {
-            transform: translateY(0); /* Effet lors du clic */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        button:hover {
+            background-color: #00695c;
         }
 
         .result {
@@ -137,6 +129,7 @@
             color: #00ff00;
         }
 
+        /* Media Queries pour améliorer la réactivité */
         @media (max-width: 800px) {
             .alphabet-table {
                 flex-direction: column;
@@ -154,8 +147,6 @@
         }
 
         .toggle-button {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
             background-color: #004d40;
             color: #fff;
             padding: 10px 20px;
@@ -163,12 +154,17 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background 0.3s;
         }
 
         .toggle-button:hover {
             background-color: #00695c;
         }
+
+        #alphabetMessage {
+            color: #00ff00;
+            display: none;
+        }
+
     </style>
 </head>
 <body>
@@ -189,6 +185,7 @@
         <div class="info-container">
             <h3>Tableau de correspondance des lettres :</h3>
             <button class="toggle-button" onclick="toggleAlphabetTable()">Afficher/Masquer le tableau des lettres</button>
+            <p id="alphabetMessage">Voici le tableau des lettres :</p>
             <div class="alphabet-table">
                 <!-- Première colonne : A-M -->
                 <div class="alphabet-column">
@@ -259,14 +256,15 @@
 
         function checkAnswer() {
             const userInput = document.getElementById("userInput").value.trim().toUpperCase();
+            const decodedWord = reverseShift(cipherWord, shift);
             const resultMessage = document.getElementById("resultMessage");
 
-            if (userInput === plainWord) {
-                resultMessage.style.color = "green";
-                resultMessage.innerHTML = "Bravo ! Vous avez déchiffré le mot.";
+            if (userInput === decodedWord) {
+                resultMessage.textContent = "Bravo, vous avez déchiffré le mot correctement !";
+                resultMessage.style.color = "#0f0";
             } else {
-                resultMessage.style.color = "red";
-                resultMessage.innerHTML = "Dommage, essayez encore.";
+                resultMessage.textContent = `Erreur. Vous avez entré : "${userInput}". Mot attendu : "${decodedWord}".`;
+                resultMessage.style.color = "#f00";
             }
         }
 
@@ -275,19 +273,21 @@
             shift = generateShift();
             cipherWord = applyShift(plainWord, shift);
             document.getElementById("wordToDecrypt").textContent = cipherWord;
-            document.getElementById("firstLetter").textContent = cipherWord[0];
+            document.getElementById("firstLetter").textContent = plainWord[0];
             document.getElementById("userInput").value = "";
             document.getElementById("resultMessage").textContent = "";
         }
 
         function toggleAlphabetTable() {
-            const alphabetTable = document.querySelector(".alphabet-table");
-            alphabetTable.style.display = alphabetTable.style.display === "none" ? "flex" : "none";
+            const table = document.querySelector('.alphabet-table');
+            const message = document.getElementById('alphabetMessage');
+            table.style.display = table.style.display === 'none' ? 'flex' : 'none';
+            message.style.display = table.style.display === 'none' ? 'none' : 'block';
         }
 
-        window.onload = function() {
-            resetGame();
-        };
+        // Initialisation du jeu au démarrage
+        document.getElementById("wordToDecrypt").textContent = cipherWord;
+        document.getElementById("firstLetter").textContent = plainWord[0];
     </script>
 </body>
 </html>
