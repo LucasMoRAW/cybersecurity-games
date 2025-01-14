@@ -109,7 +109,7 @@
             <h1>Jeu de Déchiffrement</h1>
             <h2>Mot à déchiffrer :</h2>
             <div id="wordToDecrypt" class="cipher-word"></div>
-            <p>La première lettre est : <span id="firstLetter"></span></p>
+            <p>La première lettre déchiffrée est : <span id="firstLetter"></span></p>
             <input type="text" id="userInput" placeholder="Entrez le mot clair">
             <button onclick="checkAnswer()">Valider</button>
             <p id="resultMessage" class="result"></p>
@@ -174,13 +174,13 @@
             shift = generateShift();
             cipherWord = applyShift(plainWord, shift);
             document.getElementById("wordToDecrypt").textContent = cipherWord;
-            document.getElementById("firstLetter").textContent = cipherWord[0]; // Affiche la première lettre transformée
+            document.getElementById("firstLetter").textContent = plainWord[0]; // Affiche la première lettre déchiffrée
             document.getElementById("userInput").value = "";
             document.getElementById("resultMessage").textContent = "";
         }
 
         document.getElementById("wordToDecrypt").textContent = cipherWord;
-        document.getElementById("firstLetter").textContent = cipherWord[0]; // Affiche la première lettre transformée
+        document.getElementById("firstLetter").textContent = plainWord[0]; // Affiche la première lettre déchiffrée
     </script>
 </body>
 </html>
