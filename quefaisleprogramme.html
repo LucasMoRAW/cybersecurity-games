@@ -3,16 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QCM Cybersécurité</title>
+    <title>Défi Cybersécurité - QCM</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f9;
+            font-family: 'Arial', sans-serif;
+            background: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        h1 {
+            text-align: center;
             color: #333;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .question-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .question-container:hover {
+            transform: scale(1.05);
         }
         .question {
+            font-size: 18px;
             margin-bottom: 20px;
+            color: #333;
         }
         .code-block {
             background-color: #222;
@@ -21,28 +46,67 @@
             border-radius: 5px;
             overflow-x: auto;
             font-family: monospace;
+            margin-bottom: 20px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .options label {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            margin: 10px;
+            border-radius: 8px;
+            width: 80%;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .options label:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+        .options label:active {
+            transform: scale(0.95);
         }
         button {
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: #fff;
+            background-color: #2196F3;
+            color: white;
+            padding: 12px 25px;
             border: none;
             border-radius: 5px;
+            margin-top: 20px;
+            font-size: 18px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #1976D2;
         }
         .result {
-            margin-top: 15px;
+            font-size: 1.2em;
+            margin-top: 20px;
             font-weight: bold;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
         }
     </style>
 </head>
 <body>
-    <h1>Question Cybersécurité</h1>
-    <div class="question">
-        <p>Voici un extrait de code Python. Quel est son rôle principal ?</p>
+
+    <div class="question-container">
+        <h1>Défi Cybersécurité</h1>
+        <div class="question">
+            <p>Voici un extrait de code Python. Quel est son rôle principal ?</p>
+        </div>
         <pre class="code-block">
 import hashlib
 
@@ -61,19 +125,25 @@ user_password = "password123"
 hashed = hash_password(user_password)
 print("Mot de passe haché :", hashed)
         </pre>
-        <form id="quiz-form">
+        <div class="options">
             <input type="radio" id="optionA" name="answer" value="A">
-            <label for="optionA">A - Il permet de chiffrer un mot de passe pour le sécuriser.</label><br>
+            <label for="optionA">A - Il permet de chiffrer un mot de passe pour le sécuriser.</label>
+            
             <input type="radio" id="optionB" name="answer" value="B">
-            <label for="optionB">B - Il hache un mot de passe pour le stocker de manière sécurisée dans une base de données.</label><br>
+            <label for="optionB">B - Il hache un mot de passe pour le stocker de manière sécurisée dans une base de données.</label>
+            
             <input type="radio" id="optionC" name="answer" value="C">
-            <label for="optionC">C - Il vérifie la complexité d'un mot de passe pour renforcer la sécurité.</label><br>
+            <label for="optionC">C - Il vérifie la complexité d'un mot de passe pour renforcer la sécurité.</label>
+            
             <input type="radio" id="optionD" name="answer" value="D">
-            <label for="optionD">D - Il génère un mot de passe aléatoire pour un utilisateur.</label><br>
-            <button type="button" onclick="checkAnswer()">Valider</button>
-        </form>
+            <label for="optionD">D - Il génère un mot de passe aléatoire pour un utilisateur.</label>
+        </div>
+
+        <button type="button" onclick="checkAnswer()">Valider</button>
+
         <div class="result" id="result"></div>
     </div>
+
     <script>
         function checkAnswer() {
             // Obtenir la réponse sélectionnée
@@ -96,5 +166,6 @@ print("Mot de passe haché :", hashed)
             }
         }
     </script>
+
 </body>
 </html>
