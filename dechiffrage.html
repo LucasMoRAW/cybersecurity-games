@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu de Déchiffrage - Amélioré</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            color: #333;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #4CAF50;
+        }
+
+        .table-container {
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: center;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+        }
+
+        .input-container input {
+            padding: 10px;
+            font-size: 1.2em;
+            width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .correct {
+            color: green;
+        }
+
+        .incorrect {
+            color: red;
+        }
+
+        .reset-btn {
+            background-color: #f44336;
+        }
+
+        .reset-btn:hover {
+            background-color: #e53935;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Jeu de Déchiffrage - Amélioré</h1>
+
+    <div class="table-container">
+        <h2>Tableau de Chiffrement</h2>
+        <table>
+            <tr>
+                <th>Numéro</th>
+                <th>Lettre</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>B</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>C</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>D</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>E</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>F</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>G</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>H</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>I</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>J</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="input-container">
+        <p>Entrez le code à déchiffrer (par exemple: 1 2 3 pour ABC) :</p>
+        <input type="text" id="userInput" placeholder="Entrez votre code ici">
+    </div>
+
+    <button onclick="checkAnswer()">Vérifier</button>
+    <button class="reset-btn hidden" onclick="resetGame()">Recommencer</button>
+
+    <div class="result" id="resultMessage"></div>
+
+    <script>
+        const maxAttempts = 3; // Nombre maximum d'essais avant de passer à un nouveau code
+        let currentCode = generateCode();
+        let attempts = 0;
+
+        function generateCode() {
+            // Génère un code aléatoire de 5 numéros entre 1 et 10
+            let code = "";
+            for (let i = 0; i < 5; i++) {
+                code += Math.floor(Math.random() * 10) + 1 + " ";
+            }
+            return code.trim();
+        }
+
+        function checkAnswer() {
+            const userInput = document.getElementById("userInput").value.trim();
+            const resultMessage = document.getElementById("resultMessage");
+
+            attempts++;
+
+            if (userInput === currentCode) {
+                resultMessage.textContent = "Bonne réponse ! Vous avez déchiffré le code.";
+                resultMessage.className = "result correct";
+                document.querySelector(".reset-btn").classList.remove("hidden");
+                playSound(true); // Succès
+            } else {
+                if (attempts < maxAttempts) {
+                    resultMessage.textContent = `Mauvaise réponse. Vous avez encore ${maxAttempts - attempts} tentative(s).`;
+                    resultMessage.className = "result incorrect";
+                    playSound(false); // Échec
+                } else {
+                    resultMessage.textContent = "Vous avez épuisé toutes vos tentatives. Le bon code était: " + currentCode;
+                    resultMessage.className = "result incorrect";
+                    document.querySelector(".reset-btn").classList.remove("hidden");
+                    playSound(false); // Échec final
+                }
+            }
+        }
+
+        function resetGame() {
+            attempts = 0;
+            currentCode = generateCode();
+            document.getElementById("userInput").value = "";
+            document.getElementById("resultMessage").textContent = "";
+            document.querySelector(".reset-btn").classList.add("hidden");
+        }
+
+        function playSound(isCorrect) {
+            const audio = new Audio(isCorrect ? "https://www.soundjay.com/button/beep-07.wav" : "https://www.soundjay.com/button/beep-08b.wav");
+            audio.play();
+        }
+    </script>
+
+</body>
+</html>
