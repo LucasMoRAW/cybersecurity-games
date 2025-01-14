@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu de Déchiffrement par Décalage</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+        body {
+            font-family: 'Roboto Mono', monospace;
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        .game-container, .info-container {
+            background: rgba(0, 0, 0, 0.9);
+            color: #0f0;
+            border: 1px solid #00ff00;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0px 8px 20px rgba(0, 255, 0, 0.5);
+            flex: 1;
+            max-width: 500px;
+            margin-bottom: 20px;
+        }
+
+        .game-container {
+            text-align: center;
+        }
+
+        .info-container {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .cipher-word {
+            font-family: 'Courier New', monospace;
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #00ff00, #000);
+            -webkit-background-clip: text;
+            color: transparent;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 20px auto;
+            display: inline-block;
+            animation: glitch 1.5s infinite;
+        }
+
+        input, button {
+            font-size: 1rem;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        input {
+            background-color: #001a00;
+            color: #0f0;
+        }
+
+        button {
+            background-color: #004d40;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #00695c;
+        }
+
+        .result {
+            margin: 15px 0;
+            font-size: 1.2rem;
+            color: #ff0;
+        }
+
+        @keyframes glitch {
+            0%, 100% {
+                text-shadow: -2px -2px #00ff00, 2px 2px #000;
+            }
+            50% {
+                text-shadow: 2px 2px #00ff00, -2px -2px #000;
+            }
+        }
+
+        .alphabet-table {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            width: 100%;
+            display: none; /* Cacher par défaut */
+        }
+
+        .alphabet-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .alphabet-column span {
+            font-size: 1.5rem;
+            margin: 5px;
+        }
+
+        /* Media Queries pour améliorer la réactivité */
+        @media (max-width: 800px) {
+            .alphabet-table {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .alphabet-column {
+                margin: 10px;
+            }
+        }
+
+        .toggle-button {
+            background-color: #004d40;
+            color: #fff;
+            padding: 10px 20px;
+            margin: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .toggle-button:hover {
+            background-color: #00695c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Section Jeu -->
+        <div class="game-container">
+            <h1>Jeu de Déchiffrement</h1>
+            <h2>Mot à déchiffrer :</h2>
+            <div id="wordToDecrypt" class="cipher-word"></div>
+            <p>La première lettre déchiffrée est : <span id="firstLetter"></span></p>
+            <input type="text" id="userInput" placeholder="Entrez le mot clair">
+            <button onclick="checkAnswer()">Valider</button>
+            <p id="resultMessage" class="result"></p>
+            <p id="wordDefinition" class="result"></p> <!-- Affichage de la définition -->
+            <button onclick="resetGame()">Rejouer</button>
+        </div>
+
+        <!-- Section Tableau des lettres -->
+        <div class="info-container">
+            <button class="toggle-button" onclick="toggleAlphabetTable()">Afficher/Masquer le tableau des lettres</button>
+            <div class="alphabet-table" id="alphabetTable">
+                <!-- Première colonne : A-M -->
+                <div class="alphabet-column">
+                    <span>A</span>
+                    <span>B</span>
+                    <span>C</span>
+                    <span>D</span>
+                    <span>E</span>
+                    <span>F</span>
+                    <span>G</span>
+                    <span>H</span>
+                    <span>I</span>
+                    <span>J</span>
+                    <span>K</span>
+                    <span>L</span>
+                    <span>M</span>
+                </div>
+                <!-- Deuxième colonne : N-Z -->
+                <div class="alphabet-column">
+                    <span>N</span>
+                    <span>O</span>
+                    <span>P</span>
+                    <span>Q</span>
+                    <span>R</span>
+                    <span>S</span>
+                    <span>T</span>
+                    <span>U</span>
+                    <span>V</span>
+                    <span>W</span>
+                    <span>X</span>
+                    <span>Y</span>
+                    <span>Z</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        const definitions = {
+            "CYBERSECURITE": "La cybersécurité désigne l'ensemble des pratiques destinées à protéger les systèmes informatiques et les données des cyberattaques.",
+            "DECHIFFRER": "Déchiffrer signifie rendre lisible un message ou une information codée ou cryptée.",
+            "INTERNET": "Internet est un réseau mondial permettant l'échange de données et la communication entre des appareils connectés.",
+            "SECURITE": "La sécurité consiste à mettre en place des protections contre les risques de menaces ou attaques.",
+            "CRYPTAGE": "Le cryptage est une technique permettant de transformer un message ou des données pour en rendre leur lecture impossible sans une clé spécifique.",
+            "HACKING": "Le hacking désigne l'action de pénétrer illégalement dans des systèmes informatiques pour en exploiter les failles.",
+            "PHISHING": "Le phishing est une technique de fraude qui consiste à usurper l'identité d'une entreprise pour voler des informations sensibles.",
+            "MALWARE": "Le malware (logiciel malveillant) est conçu pour perturber, endommager ou prendre le contrôle d'un système informatique.",
+            "ENCRYPTION": "L'encryption est le processus de transformation d'informations en un format illisible sans une clé secrète.",
+            "FIREWALL": "Un pare-feu (firewall) est un dispositif de sécurité réseau qui surveille et contrôle le trafic entrant et sortant.",
+            "VIRUS": "Un virus informatique est un programme malveillant qui se propage d'un ordinateur à un autre en modifiant des fichiers.",
+            "TROJAN": "Un cheval de Troie (trojan) est un type de malware qui se fait passer pour un programme légitime pour infecter un système.",
+            "PRIVACY": "La privacy se réfère à la protection des informations personnelles et à la gestion de leur accès.",
+            "PASSWORD": "Un mot de passe est une combinaison secrète utilisée pour authentifier un utilisateur et protéger des informations.",
+            "AUTHENTICATION": "L'authentification est le processus de vérification de l'identité d'un utilisateur avant de lui accorder l'accès à un système.",
+            "INTRUSION": "Une intrusion est l'accès non autorisé à un système informatique dans le but de voler des données ou perturber son fonctionnement.",
+            "RANSOMWARE": "Le ransomware est un logiciel malveillant qui bloque l'accès aux données ou au système et exige une rançon pour les débloquer."
+        };
+
+        let currentWord = '';
+        let currentWordDefinition = '';
+        let shiftValue = 0;
+
+        function generateWord() {
+            const words = Object.keys(definitions);
+            currentWord = words[Math.floor(Math.random() * words.length)];
+            currentWordDefinition = definitions[currentWord];
+            shiftValue = Math.floor(Math.random() * 29) - 8; // Décalage aléatoire entre -8 et +20
+            displayWord();
+        }
+
+        function displayWord() {
+            let encryptedWord = '';
+            for (let i = 0; i < currentWord.length; i++) {
+                let letter = currentWord[i];
+                let newLetter = shiftLetter(letter, shiftValue);
+                encryptedWord += newLetter;
+            }
+            document.getElementById('wordToDecrypt').textContent = encryptedWord;
+            document.getElementById('firstLetter').textContent = shiftLetter(currentWord[0], shiftValue);
+        }
+
+        function shiftLetter(letter, shift) {
+            const letterIndex = alphabet.indexOf(letter.toUpperCase());
+            if (letterIndex === -1) return letter; // Retourne la lettre inchangée si ce n'est pas dans l'alphabet
+            let newIndex = (letterIndex + shift + 26) % 26; // Décalage en tenant compte de l'alphabet
+            return alphabet[newIndex];
+        }
+
+        function checkAnswer() {
+            const userInput = document.getElementById('userInput').value.toUpperCase();
+            if (userInput === currentWord) {
+                document.getElementById('resultMessage').textContent = 'Bravo ! Vous avez trouvé le mot.';
+                document.getElementById('wordDefinition').textContent = 'Définition : ' + currentWordDefinition;
+            } else {
+                document.getElementById('resultMessage').textContent = `Erreur. Vous avez entré : ${userInput}. Mot attendu : ${currentWord}.`;
+                document.getElementById('wordDefinition').textContent = ''; // Réinitialisation de la définition
+            }
+        }
+
+        function resetGame() {
+            document.getElementById('userInput').value = '';
+            document.getElementById('resultMessage').textContent = '';
+            document.getElementById('wordDefinition').textContent = '';
+            generateWord();
+        }
+
+        function toggleAlphabetTable() {
+            const table = document.getElementById('alphabetTable');
+            table.style.display = table.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        window.onload = generateWord;
+    </script>
+</body>
+</html>
