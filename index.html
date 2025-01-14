@@ -3,58 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Défi Cybersécurité - Email de Phishing</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
+    <title>Jeu - Question aléatoire</title>
+    <script>
+        // Rediriger aléatoirement vers une des 4 pages de questions
+        function redirectToRandomQuestion() {
+            // Crée un nombre aléatoire entre 1 et 4
+            const randomNumber = Math.floor(Math.random() * 4) + 1;
+
+            // Redirige l'utilisateur vers une des pages en fonction du nombre
+            switch(randomNumber) {
+                case 1:
+                    window.location.href = "qcm1.html";  // Page 1
+                    break;
+                case 2:
+                    window.location.href = "qcm2.html";  // Page 2
+                    break;
+                case 3:
+                    window.location.href = "qcm3.html";  // Page 3
+                    break;
+                case 4:
+                    window.location.href = "qcm4.html";  // Page 4
+                    break;
+            }
         }
-        .email-container {
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin: 20px auto;
-            width: 80%;
-            max-width: 600px;
-            background-color: #f9f9f9;
-        }
-        .email-header {
-            font-weight: bold;
-            font-size: 18px;
-            color: #333;
-        }
-        .choices {
-            margin-top: 20px;
-        }
-        .choices button {
-            margin: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-        .choices button:hover {
-            background-color: #45a049;
-        }
-    </style>
+
+        // Appeler la fonction pour rediriger dès que la page est chargée
+        window.onload = redirectToRandomQuestion;
+    </script>
 </head>
 <body>
-    <h1>Défi Cybersécurité : Reconnaître un Email de Phishing</h1>
-    <div class="email-container">
-        <p class="email-header">Votre banque (contact@securebank.com)</p>
-        <p>Bonjour,<br><br>
-        Nous avons remarqué une activité suspecte sur votre compte. Veuillez <a href="http://fake-securebank.com">cliquer ici</a> pour vérifier vos informations immédiatement.
-        </p>
-    </div>
-    <h2>Quels sont les éléments suspects ?</h2>
-    <div class="choices">
-        <button onclick="alert('Correct ! L\'adresse email est suspecte.')">Adresse Email</button>
-        <button onclick="alert('Faux ! Essayez encore.')">Logo</button>
-        <button onclick="alert('Correct ! Le lien n\'est pas sécurisé.')">Lien</button>
-        <button onclick="alert('Faux ! Essayez encore.')">Orthographe</button>
-    </div>
+    <p>Redirection vers une question aléatoire...</p>
 </body>
 </html>
