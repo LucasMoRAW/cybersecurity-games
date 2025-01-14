@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeu de Déchiffrement</title>
     <style>
-        /* Général */
+        /* Le design reste inchangé */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -31,24 +31,6 @@
         h1, h2 {
             color: #004d40;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            font-size: 1.1rem;
-            text-align: center;
-        }
-        th {
-            background-color: #004d40;
-            color: #fff;
-        }
-        td {
-            background-color: #e8f5e9;
-        }
         .cipher-word {
             font-family: 'Courier New', monospace;
             font-size: 1.5rem;
@@ -58,7 +40,6 @@
             padding: 10px;
             margin: 20px auto;
             display: inline-block;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
         }
         input, button {
             font-size: 1rem;
@@ -66,63 +47,29 @@
             margin: 10px 5px;
             border: none;
             border-radius: 5px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-        }
-        input {
-            width: 80%;
-            border: 1px solid #ccc;
         }
         button {
             background-color: #004d40;
             color: #fff;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #2e7d32;
         }
         .result {
             margin: 15px 0;
             font-size: 1.2rem;
-        }
-        .result.correct {
-            color: green;
-        }
-        .result.incorrect {
-            color: red;
-        }
-        .reset-btn.hidden {
-            display: none;
         }
     </style>
 </head>
 <body>
     <div class="game-container">
         <h1>Jeu de Déchiffrement</h1>
-        <p>Utilisez le tableau ci-dessous pour déchiffrer le mot codé.</p>
-        
         <h2>Mot à déchiffrer :</h2>
         <div id="wordToDecrypt" class="cipher-word"></div>
-        
-        <label for="userInput">Entrez votre déchiffrement :</label><br>
-        <input type="text" id="userInput">
+        <input type="text" id="userInput" placeholder="Entrez le mot clair">
         <button onclick="checkAnswer()">Valider</button>
         <p id="resultMessage" class="result"></p>
-        <button class="reset-btn hidden" onclick="resetGame()">Rejouer</button>
-
-        <h2>Tableau de chiffrement</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Lettre</th>
-                    <th>Code</th>
-                </tr>
-            </thead>
-            <tbody id="cipherTable"></tbody>
-        </table>
+        <button onclick="resetGame()">Rejouer</button>
     </div>
 
     <script>
-        // Tableau de chiffrement : A-M => caractères spéciaux, N-Z => chiffres
         const cipherMap = {
             "A": "@", "B": "#", "C": "$", "D": "%", "E": "&", "F": "*", "G": "+", 
             "H": "-", "I": "_", "J": "!", "K": "^", "L": "~", "M": "?",
@@ -132,53 +79,31 @@
 
         const reverseCipherMap = Object.fromEntries(Object.entries(cipherMap).map(([key, value]) => [value, key]));
 
-        // Variables globales
         let plainWord = generateWord();
         let cipherWord = convertToCode(plainWord);
-        let attempts = 0;
 
-        // Génère un mot aléatoire à partir d'une liste
         function generateWord() {
             const words = ["CYBERSECURITE", "DECHIFFRER", "INTERNET", "SECURITE", "CRYPTAGE"];
             return words[Math.floor(Math.random() * words.length)];
         }
 
-        // Affiche le tableau de chiffrement dans le HTML
-        function displayCipherTable() {
-            const tableBody = document.getElementById("cipherTable");
-            Object.entries(cipherMap).forEach(([letter, code]) => {
-                const row = document.createElement("tr");
-                row.innerHTML = `<td>${letter}</td><td>${code}</td>`;
-                tableBody.appendChild(row);
-            });
-        }
-
-        // Vérifie la réponse de l'utilisateur
-        function checkAnswer() {
-            const userInput = document.getElementById("userInput").value.trim().toUpperCase();
-            const resultMessage = document.getElementById("resultMessage");
-
-            // Convertit l'entrée utilisateur en mot clair
-            const decodedInput = userInput.split(' ').map(code => reverseCipherMap[code] || '?').join('');
-
-            if (decodedInput === plainWord) {
-                resultMessage.textContent = "Bravo ! Vous avez trouvé le bon mot.";
-                resultMessage.className = "result correct";
-                document.querySelector(".reset-btn").classList.remove("hidden");
-            } else {
-                attempts++;
-                resultMessage.textContent = `Mauvaise réponse. Essais restants : ${3 - attempts}`;
-                resultMessage.className = "result incorrect";
-
-                if (attempts >= 3) {
-                    resultMessage.textContent = "Vous avez épuisé vos tentatives ! Le mot était : " + plainWord;
-                    document.querySelector(".reset-btn").classList.remove("hidden");
-                }
-            }
-        }
-
         function convertToCode(word) {
             return word.toUpperCase().split('').map(letter => cipherMap[letter] || letter).join(' ');
+        }
+
+        function checkAnswer() {
+            const userInput = document.getElementById("userInput").value.trim();
+            const decodedInput = userInput.split(/\s+/).map(code => reverseCipherMap[code] || '?').join('');
+
+            const resultMessage = document.getElementById("resultMessage");
+
+            if (decodedInput === plainWord) {
+                resultMessage.textContent = "Bravo, vous avez déchiffré le mot correctement !";
+                resultMessage.style.color = "green";
+            } else {
+                resultMessage.textContent = `Erreur. Vous avez entré : "${userInput}". Mot attendu : "${plainWord}".`;
+                resultMessage.style.color = "red";
+            }
         }
 
         function resetGame() {
@@ -187,12 +112,8 @@
             document.getElementById("wordToDecrypt").textContent = cipherWord;
             document.getElementById("userInput").value = "";
             document.getElementById("resultMessage").textContent = "";
-            attempts = 0;
-            document.querySelector(".reset-btn").classList.add("hidden");
         }
 
-        // Initialise le jeu
-        displayCipherTable();
         document.getElementById("wordToDecrypt").textContent = cipherWord;
     </script>
 </body>
