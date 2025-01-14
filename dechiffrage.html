@@ -6,11 +6,12 @@
     <title>Jeu de Déchiffrement par Décalage</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
         body {
             font-family: 'Roboto Mono', monospace;
             margin: 0;
             padding: 0;
-            background: #000;
+            background: linear-gradient(135deg, #001f00, #003300);
             color: #0f0;
             display: flex;
             flex-direction: column;
@@ -20,43 +21,42 @@
             text-align: center;
         }
 
+        h1, h2, h3 {
+            color: #00ff00;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
         .container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             gap: 40px;
             width: 90%;
             max-width: 1200px;
+            margin-top: 30px;
         }
 
         .game-container, .info-container {
-            background: rgba(0, 0, 0, 0.9);
-            color: #0f0;
-            border: 1px solid #00ff00;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff00;
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0px 8px 20px rgba(0, 255, 0, 0.5);
             flex: 1;
             max-width: 500px;
             margin-bottom: 20px;
+            transition: transform 0.3s ease;
         }
 
-        .game-container {
-            text-align: center;
-        }
-
-        .info-container {
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+        .game-container:hover, .info-container:hover {
+            transform: scale(1.05);
         }
 
         .cipher-word {
             font-family: 'Courier New', monospace;
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: bold;
             background: linear-gradient(90deg, #00ff00, #000);
             -webkit-background-clip: text;
@@ -74,18 +74,19 @@
             margin: 10px 5px;
             border: none;
             border-radius: 5px;
+            transition: background 0.3s;
         }
 
         input {
             background-color: #001a00;
             color: #0f0;
+            border: 2px solid #00ff00;
         }
 
         button {
             background-color: #004d40;
             color: #fff;
             cursor: pointer;
-            transition: background 0.3s;
         }
 
         button:hover {
@@ -110,12 +111,9 @@
         .alphabet-table {
             display: flex;
             justify-content: center;
-            align-items: flex-start;
             gap: 40px;
             margin-top: 20px;
             flex-wrap: wrap;
-            max-width: 1000px;
-            width: 100%;
         }
 
         .alphabet-column {
@@ -127,6 +125,7 @@
         .alphabet-column span {
             font-size: 1.5rem;
             margin: 5px;
+            color: #00ff00;
         }
 
         /* Media Queries pour améliorer la réactivité */
@@ -139,6 +138,11 @@
             .alphabet-column {
                 margin: 10px;
             }
+
+            .game-container, .info-container {
+                width: 100%;
+                margin-bottom: 30px;
+            }
         }
     </style>
 </head>
@@ -150,7 +154,7 @@
             <h2>Mot à déchiffrer :</h2>
             <div id="wordToDecrypt" class="cipher-word"></div>
             <p>La première lettre déchiffrée est : <span id="firstLetter"></span></p>
-            <input type="text" id="userInput" placeholder="Entrez le mot clair">
+            <input type="text" id="userInput" placeholder="Entrez le mot clair" autofocus>
             <button onclick="checkAnswer()">Valider</button>
             <p id="resultMessage" class="result"></p>
             <button onclick="resetGame()">Rejouer</button>
@@ -198,18 +202,15 @@
 
     <script>
         const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
         let plainWord = generateWord();
         let shift = generateShift();
         let cipherWord = applyShift(plainWord, shift);
 
         function generateWord() {
-            const words = [
-                "CYBERSECURITE", "DECHIFFRER", "INTERNET", "SECURITE", "CRYPTAGE",
+            const words = ["CYBERSECURITE", "DECHIFFRER", "INTERNET", "SECURITE", "CRYPTAGE",
                 "HACKING", "PHISHING", "MALWARE", "ENCRYPTION", "FIREWALL", "VIRUS",
                 "TROJAN", "PRIVACY", "PASSWORD", "AUTHENTICATION", "INTRUSION",
-                "BACKDOOR", "PROXY", "VPN", "RANSOMWARE", "SPYWARE", "SOC", "MFA", "HACKER", "DDoS", "ROOTKIT"
-            ];
+                "BACKDOOR", "PROXY", "VPN", "RANSOMWARE", "SPYWARE", "SOC", "MFA", "HACKER", "DDoS", "ROOTKIT"];
             return words[Math.floor(Math.random() * words.length)];
         }
 
@@ -222,7 +223,7 @@
                 if (!alphabet.includes(char)) return char;
                 let newIndex = (alphabet.indexOf(char) + shift + alphabet.length) % alphabet.length;
                 return alphabet[newIndex];
-            }).join(''); 
+            }).join('');
         }
 
         function reverseShift(cipherWord, shift) {
@@ -236,7 +237,6 @@
         function checkAnswer() {
             const userInput = document.getElementById("userInput").value.trim().toUpperCase();
             const decodedWord = reverseShift(cipherWord, shift);
-
             const resultMessage = document.getElementById("resultMessage");
 
             if (userInput === decodedWord) {
@@ -253,13 +253,13 @@
             shift = generateShift();
             cipherWord = applyShift(plainWord, shift);
             document.getElementById("wordToDecrypt").textContent = cipherWord;
-            document.getElementById("firstLetter").textContent = plainWord[0]; // Affiche la première lettre déchiffrée
+            document.getElementById("firstLetter").textContent = plainWord[0];
             document.getElementById("userInput").value = "";
             document.getElementById("resultMessage").textContent = "";
         }
 
         document.getElementById("wordToDecrypt").textContent = cipherWord;
-        document.getElementById("firstLetter").textContent = plainWord[0]; // Affiche la première lettre déchiffrée
+        document.getElementById("firstLetter").textContent = plainWord[0];
     </script>
 </body>
 </html>
