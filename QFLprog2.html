@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QCM Cybersécurité - Question 1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .code-block {
+            background-color: #222;
+            color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: monospace;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>QCM Cybersécurité - Question 1</h1>
+    <div class="question">
+        <p>Voici un extrait de code Python. Que fait ce programme ?</p>
+        <pre class="code-block">
+import hashlib
+
+def hash_password(password):
+    hash_object = hashlib.sha256(password.encode())
+    hashed_password = hash_object.hexdigest()
+    return hashed_password
+
+user_password = "password123"
+hashed = hash_password(user_password)
+print("Mot de passe haché :", hashed)
+        </pre>
+        <form id="qcm1" onsubmit="return checkAnswer('qcm1', 'B', 'Le programme utilise la fonction SHA-256 pour hacher le mot de passe et le rendre sécurisé pour le stockage.')">
+            <input type="radio" id="optionA1" name="answer1" value="A">
+            <label for="optionA1">A - Il chiffre un mot de passe pour le rendre illisible.</label><br>
+            <input type="radio" id="optionB1" name="answer1" value="B">
+            <label for="optionB1">B - Il hache un mot de passe pour le stocker de manière sécurisée.</label><br>
+            <input type="radio" id="optionC1" name="answer1" value="C">
+            <label for="optionC1">C - Il crypte un mot de passe pour le protéger.</label><br>
+            <input type="radio" id="optionD1" name="answer1" value="D">
+            <label for="optionD1">D - Il génère un mot de passe aléatoire.</label><br>
+            <button type="submit">Valider</button>
+        </form>
+        <div class="result" id="result1"></div>
+        <a href="qcm2.html">Question suivante</a>
+    </div>
+
+    <script>
+        function checkAnswer(formId, correctAnswer, explanation) {
+            const form = document.getElementById(formId);
+            const selected = form.querySelector('input[name="answer1"]:checked');
+            const result = document.getElementById('result1');
+
+            if (!selected) {
+                result.textContent = "Veuillez sélectionner une réponse.";
+                result.style.color = "red";
+                return false;
+            }
+
+            if (selected.value === correctAnswer) {
+                result.textContent = "Bonne réponse ! " + explanation;
+                result.style.color = "green";
+            } else {
+                result.textContent = "Mauvaise réponse. " + explanation;
+                result.style.color = "red";
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>
