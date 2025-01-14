@@ -5,27 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeu de Déchiffrage Cybersécurité</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f4f8;
+        /* Réinitialisation des marges et paddings */
+        * {
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-            color: #333;
-            overflow: hidden;
             box-sizing: border-box;
         }
 
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
         h1 {
-            font-size: 2.5em;
+            font-size: 3em;
             margin-bottom: 20px;
             text-align: center;
             color: #4CAF50;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 500px;
         }
 
         .table-container {
@@ -34,8 +40,8 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
             max-width: 350px;
-            width: 100%;
         }
 
         table {
@@ -45,7 +51,7 @@
 
         table th, table td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 12px;
             text-align: center;
             font-size: 1.1em;
             background-color: #f8f8f8;
@@ -53,8 +59,9 @@
 
         .input-container {
             margin-bottom: 20px;
+            width: 90%;
             max-width: 400px;
-            width: 100%;
+            text-align: center;
         }
 
         .input-container input {
@@ -93,6 +100,8 @@
             font-size: 1.3em;
             font-weight: bold;
             margin-top: 15px;
+            width: 100%;
+            text-align: center;
         }
 
         .correct {
@@ -123,11 +132,46 @@
             border-radius: 5px;
         }
 
-        .input-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .table-container, .input-container {
+                width: 90%;
+                max-width: 100%;
+                margin-bottom: 15px;
+            }
+
+            .input-container input, button {
+                font-size: 1.1em;
+            }
+
+            .result {
+                font-size: 1.1em;
+            }
         }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            table th, table td {
+                padding: 10px;
+                font-size: 1em;
+            }
+
+            .input-container input, button {
+                font-size: 1em;
+            }
+
+            .result {
+                font-size: 1em;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -166,7 +210,7 @@
             <tr><td>?</td><td>M</td></tr>
             <tr><td>/</td><td>N</td></tr>
             <tr><td>:</td><td>O</td></tr>
-            <tr><td>; </td><td>P</td></tr>
+            <tr><td>;</td><td>P</td></tr>
             <tr><td>|</td><td>Q</td></tr>
             <tr><td>"</td><td>R</td></tr>
             <tr><td>'</td><td>S</td></tr>
@@ -250,14 +294,13 @@
             document.querySelector(".reset-btn").classList.add("hidden");
         }
 
-        function playSound(isCorrect) {
-            const audio = new Audio(isCorrect ? "https://www.soundjay.com/button/beep-07.wav" : "https://www.soundjay.com/button/beep-08b.wav");
+        function playSound(success) {
+            const audio = new Audio(success ? 'success.mp3' : 'error.mp3');
             audio.play();
         }
 
-        // Affiche le mot à déchiffrer au début du jeu
+        // Initialise le jeu
         document.getElementById("wordToDecrypt").textContent = currentWord;
     </script>
-
 </body>
 </html>
