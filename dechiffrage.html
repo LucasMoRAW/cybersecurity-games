@@ -100,6 +100,25 @@
                 text-shadow: 2px 2px #00ff00, -2px -2px #000;
             }
         }
+
+        .alphabet-table {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .alphabet-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+        }
+
+        .alphabet-column span {
+            font-size: 1.5rem;
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
@@ -114,6 +133,45 @@
             <button onclick="checkAnswer()">Valider</button>
             <p id="resultMessage" class="result"></p>
             <button onclick="resetGame()">Rejouer</button>
+        </div>
+
+        <!-- Section Tableau des lettres -->
+        <div class="info-container">
+            <h3>Tableau de correspondance des lettres :</h3>
+            <div class="alphabet-table">
+                <!-- Première colonne : A-M -->
+                <div class="alphabet-column">
+                    <span>A</span>
+                    <span>B</span>
+                    <span>C</span>
+                    <span>D</span>
+                    <span>E</span>
+                    <span>F</span>
+                    <span>G</span>
+                    <span>H</span>
+                    <span>I</span>
+                    <span>J</span>
+                    <span>K</span>
+                    <span>L</span>
+                    <span>M</span>
+                </div>
+                <!-- Deuxième colonne : N-Z -->
+                <div class="alphabet-column">
+                    <span>N</span>
+                    <span>O</span>
+                    <span>P</span>
+                    <span>Q</span>
+                    <span>R</span>
+                    <span>S</span>
+                    <span>T</span>
+                    <span>U</span>
+                    <span>V</span>
+                    <span>W</span>
+                    <span>X</span>
+                    <span>Y</span>
+                    <span>Z</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -134,7 +192,6 @@
             return words[Math.floor(Math.random() * words.length)];
         }
 
-        // Déclenche le décalage entre -6 et +6
         function generateShift() {
             return Math.floor(Math.random() * 13) - 6; // Décalage entre -6 et +6
         }
