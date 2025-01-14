@@ -5,31 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeu de Déchiffrement</title>
     <style>
-        /* Le design reste inchangé */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
             background: linear-gradient(135deg, #2e7d32, #004d40);
             color: #fff;
-            text-align: center;
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            align-items: center;
             justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            box-sizing: border-box;
         }
         .game-container {
             background: rgba(255, 255, 255, 0.9);
             color: #333;
             border-radius: 15px;
             box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 30px;
+            max-width: 600px;
+            flex: 1;
+            padding: 20px;
             text-align: center;
         }
-        h1, h2 {
-            color: #004d40;
+        .cipher-table {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border-radius: 15px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+        }
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #004d40;
+            padding: 8px 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #004d40;
+            color: #fff;
         }
         .cipher-word {
             font-family: 'Courier New', monospace;
@@ -59,14 +88,28 @@
     </style>
 </head>
 <body>
-    <div class="game-container">
-        <h1>Jeu de Déchiffrement</h1>
-        <h2>Mot à déchiffrer :</h2>
-        <div id="wordToDecrypt" class="cipher-word"></div>
-        <input type="text" id="userInput" placeholder="Entrez le mot clair">
-        <button onclick="checkAnswer()">Valider</button>
-        <p id="resultMessage" class="result"></p>
-        <button onclick="resetGame()">Rejouer</button>
+    <div class="container">
+        <div class="game-container">
+            <h1>Jeu de Déchiffrement</h1>
+            <h2>Mot à déchiffrer :</h2>
+            <div id="wordToDecrypt" class="cipher-word"></div>
+            <input type="text" id="userInput" placeholder="Entrez le mot clair">
+            <button onclick="checkAnswer()">Valider</button>
+            <p id="resultMessage" class="result"></p>
+            <button onclick="resetGame()">Rejouer</button>
+        </div>
+        <div class="cipher-table">
+            <h2>Tableau des Correspondances</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Lettre</th>
+                        <th>Caractère/Chiffre</th>
+                    </tr>
+                </thead>
+                <tbody id="cipherTableBody"></tbody>
+            </table>
+        </div>
     </div>
 
     <script>
@@ -114,7 +157,15 @@
             document.getElementById("resultMessage").textContent = "";
         }
 
+        function populateCipherTable() {
+            const tableBody = document.getElementById("cipherTableBody");
+            tableBody.innerHTML = Object.entries(cipherMap).map(([letter, code]) => 
+                `<tr><td>${letter}</td><td>${code}</td></tr>`
+            ).join('');
+        }
+
         document.getElementById("wordToDecrypt").textContent = cipherWord;
+        populateCipherTable();
     </script>
 </body>
 </html>
