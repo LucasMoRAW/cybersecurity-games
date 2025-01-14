@@ -153,7 +153,6 @@
             <input type="text" id="userInput" placeholder="Entrez le mot clair">
             <button onclick="checkAnswer()">Valider</button>
             <p id="resultMessage" class="result"></p>
-            <p id="wordDefinition" class="result"></p> <!-- Affichage de la définition -->
             <button onclick="resetGame()">Rejouer</button>
         </div>
 
@@ -200,78 +199,67 @@
     <script>
         const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        const definitions = {
-            "CYBERSECURITE": "La cybersécurité désigne l'ensemble des pratiques destinées à protéger les systèmes informatiques et les données des cyberattaques.",
-            "DECHIFFRER": "Déchiffrer signifie rendre lisible un message ou une information codée ou cryptée.",
-            "INTERNET": "Internet est un réseau mondial permettant l'échange de données et la communication entre des appareils connectés.",
-            "SECURITE": "La sécurité consiste à mettre en place des protections contre les risques de menaces ou attaques.",
-            "CRYPTAGE": "Le cryptage est une technique permettant de transformer un message ou des données pour en rendre leur lecture impossible sans une clé spécifique.",
-            "HACKING": "Le hacking désigne l'action de pénétrer illégalement dans des systèmes informatiques pour en exploiter les failles.",
-            "PHISHING": "Le phishing est une technique de fraude qui consiste à usurper l'identité d'une entreprise pour voler des informations sensibles.",
-            "MALWARE": "Le malware (logiciel malveillant) est conçu pour perturber, endommager ou prendre le contrôle d'un système informatique.",
-            "ENCRYPTION": "L'encryption est le processus de transformation d'informations en un format illisible sans une clé secrète.",
-            "FIREWALL": "Un pare-feu (firewall) est un dispositif de sécurité réseau qui surveille et contrôle le trafic entrant et sortant.",
-            "VIRUS": "Un virus informatique est un programme malveillant qui se propage d'un ordinateur à un autre en modifiant des fichiers.",
-            "TROJAN": "Un cheval de Troie (trojan) est un type de malware qui se fait passer pour un programme légitime pour infecter un système.",
-            "PRIVACY": "La privacy se réfère à la protection des informations personnelles et à la gestion de leur accès.",
-            "PASSWORD": "Un mot de passe est une combinaison secrète utilisée pour authentifier un utilisateur et protéger des informations.",
-            "AUTHENTICATION": "L'authentification est le processus de vérification de l'identité d'un utilisateur avant de lui accorder l'accès à un système.",
-            "INTRUSION": "L'intrusion est l'acte d'entrer illégalement dans un système informatique ou un réseau.",
-            "BACKDOOR": "Un backdoor est une méthode d'accès secrète utilisée par un hacker pour accéder à un système informatique de manière discrète.",
-            "PROXY": "Un proxy est un serveur intermédiaire qui permet d'acheminer des requêtes entre un utilisateur et le serveur cible, souvent utilisé pour sécuriser l'accès.",
-            "VPN": "Un VPN (Virtual Private Network) est une technologie permettant de créer une connexion sécurisée et privée sur Internet.",
-            "RANSOMWARE": "Le ransomware est un type de malware qui bloque l'accès à un système ou à des données et exige une rançon pour les débloquer."
-        };
-
-        let currentWord = '';
-        let currentWordDefinition = '';
-        let shiftValue = 0;
+        let plainWord = generateWord();
+        let shift = generateShift();
+        let cipherWord = applyShift(plainWord, shift);
 
         function generateWord() {
-            const words = Object.keys(definitions);
-            currentWord = words[Math.floor(Math.random() * words.length)];
-            currentWordDefinition = definitions[currentWord];
-            shiftValue = Math.floor(Math.random() * 12) - 6; // Décalage aléatoire entre -6 et +6
-            displayWord();
+            const words = [
+                "CYBERSECURITE", "DECHIFFRER", "INTERNET", "SECURITE", "CRYPTAGE",
+                "HACKING", "PHISHING", "MALWARE", "ENCRYPTION", "FIREWALL", "VIRUS",
+                "TROJAN", "PRIVACY", "PASSWORD", "AUTHENTICATION", "INTRUSION",
+                "BACKDOOR", "PROXY", "VPN", "RANSOMWARE", "SPYWARE"
+            ];
+            return words[Math.floor(Math.random() * words.length)];
         }
 
-        function displayWord() {
-            let encryptedWord = '';
-            for (let i = 0; i < currentWord.length; i++) {
-                let letter = currentWord[i];
-                let newLetter = shiftLetter(letter, shiftValue);
-                encryptedWord += newLetter;
-            }
-            document.getElementById('wordToDecrypt').textContent = encryptedWord;
-            document.getElementById('firstLetter').textContent = shiftLetter(currentWord[0], shiftValue);
+        function generateShift() {
+            return Math.floor(Math.random() * 13) - 6; // Décalage entre -6 et +6
         }
 
-        function shiftLetter(letter, shift) {
-            const letterIndex = alphabet.indexOf(letter.toUpperCase());
-            if (letterIndex === -1) return letter; // Retourne la lettre inchangée si ce n'est pas dans l'alphabet
-            let newIndex = (letterIndex + shift + 26) % 26; // Décalage en tenant compte de l'alphabet
-            return alphabet[newIndex];
+        function applyShift(word, shift) {
+            return word.split('').map(char => {
+                if (!alphabet.includes(char)) return char;
+                let newIndex = (alphabet.indexOf(char) + shift + alphabet.length) % alphabet.length;
+                return alphabet[newIndex];
+            }).join('');
+        }
+
+        function reverseShift(cipherWord, shift) {
+            return cipherWord.split('').map(char => {
+                if (!alphabet.includes(char)) return char;
+                let newIndex = (alphabet.indexOf(char) - shift + alphabet.length) % alphabet.length;
+                return alphabet[newIndex];
+            }).join('');
         }
 
         function checkAnswer() {
-            const userInput = document.getElementById('userInput').value.toUpperCase();
-            if (userInput === currentWord) {
-                document.getElementById('resultMessage').textContent = 'Bravo ! Vous avez trouvé le mot.';
-                document.getElementById('wordDefinition').textContent = 'Définition : ' + currentWordDefinition;
+            const userInput = document.getElementById("userInput").value.trim().toUpperCase();
+            const decodedWord = reverseShift(cipherWord, shift);
+
+            const resultMessage = document.getElementById("resultMessage");
+
+            if (userInput === decodedWord) {
+                resultMessage.textContent = "Bravo, vous avez déchiffré le mot correctement !";
+                resultMessage.style.color = "#0f0";
             } else {
-                document.getElementById('resultMessage').textContent = `Erreur. Vous avez entré : ${userInput}. Mot attendu : ${currentWord}.`;
-                document.getElementById('wordDefinition').textContent = ''; // Réinitialisation de la définition
+                resultMessage.textContent = `Erreur. Vous avez entré : "${userInput}". Mot attendu : "${decodedWord}".`;
+                resultMessage.style.color = "#f00";
             }
         }
 
         function resetGame() {
-            document.getElementById('userInput').value = '';
-            document.getElementById('resultMessage').textContent = '';
-            document.getElementById('wordDefinition').textContent = '';
-            generateWord();
+            plainWord = generateWord();
+            shift = generateShift();
+            cipherWord = applyShift(plainWord, shift);
+            document.getElementById("wordToDecrypt").textContent = cipherWord;
+            document.getElementById("firstLetter").textContent = plainWord[0]; // Affiche la première lettre déchiffrée
+            document.getElementById("userInput").value = "";
+            document.getElementById("resultMessage").textContent = "";
         }
 
-        window.onload = generateWord;
+        document.getElementById("wordToDecrypt").textContent = cipherWord;
+        document.getElementById("firstLetter").textContent = plainWord[0]; // Affiche la première lettre déchiffrée
     </script>
 </body>
 </html>
