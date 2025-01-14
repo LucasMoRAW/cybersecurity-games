@@ -220,15 +220,13 @@
             "BACKDOOR": "Un backdoor est une méthode d'accès secrète utilisée par un hacker pour accéder à un système informatique de manière discrète.",
             "PROXY": "Un proxy est un serveur intermédiaire qui permet d'acheminer des requêtes entre un utilisateur et le serveur cible, souvent utilisé pour sécuriser l'accès.",
             "VPN": "Un VPN (Virtual Private Network) est une technologie permettant de créer une connexion sécurisée et privée sur Internet.",
-            "RANSOMWARE": "Le ransomware est un type de malware qui bloque l'accès à un système ou à des données et exige une rançon pour les débloquer.",
-            "SPYWARE": "Le spyware est un logiciel malveillant conçu pour espionner les actions de l'utilisateur et collecter des informations personnelles."
+            "RANSOMWARE": "Le ransomware est un type de malware qui bloque l'accès à un système ou à des données et exige une rançon pour les débloquer."
         };
 
         let currentWord = '';
         let currentWordDefinition = '';
         let shiftValue = 0;
 
-        // Fonction pour générer un mot aléatoire et ses paramètres
         function generateWord() {
             const words = Object.keys(definitions);
             currentWord = words[Math.floor(Math.random() * words.length)];
@@ -237,7 +235,6 @@
             displayWord();
         }
 
-        // Affichage du mot à déchiffrer avec décalage
         function displayWord() {
             let encryptedWord = '';
             for (let i = 0; i < currentWord.length; i++) {
@@ -249,7 +246,6 @@
             document.getElementById('firstLetter').textContent = shiftLetter(currentWord[0], shiftValue);
         }
 
-        // Fonction pour décaler une lettre
         function shiftLetter(letter, shift) {
             const letterIndex = alphabet.indexOf(letter.toUpperCase());
             if (letterIndex === -1) return letter; // Retourne la lettre inchangée si ce n'est pas dans l'alphabet
@@ -257,7 +253,6 @@
             return alphabet[newIndex];
         }
 
-        // Vérification de la réponse de l'utilisateur
         function checkAnswer() {
             const userInput = document.getElementById('userInput').value.toUpperCase();
             if (userInput === currentWord) {
@@ -269,7 +264,6 @@
             }
         }
 
-        // Réinitialiser le jeu
         function resetGame() {
             document.getElementById('userInput').value = '';
             document.getElementById('resultMessage').textContent = '';
@@ -277,7 +271,6 @@
             generateWord();
         }
 
-        // Initialisation du jeu
         window.onload = generateWord;
     </script>
 </body>
