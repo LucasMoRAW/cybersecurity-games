@@ -17,12 +17,13 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            text-align: center;
         }
 
         .container {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-around;
+            justify-content: center;
             align-items: flex-start;
             gap: 40px;
             width: 90%;
@@ -38,6 +39,7 @@
             box-shadow: 0px 8px 20px rgba(0, 255, 0, 0.5);
             flex: 1;
             max-width: 500px;
+            margin-bottom: 20px;
         }
 
         .game-container {
@@ -46,6 +48,10 @@
 
         .info-container {
             text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
 
         .cipher-word {
@@ -103,21 +109,36 @@
 
         .alphabet-table {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
             margin-top: 20px;
             flex-wrap: wrap;
+            max-width: 1000px;
+            width: 100%;
         }
 
         .alphabet-column {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 10px;
         }
 
         .alphabet-column span {
             font-size: 1.5rem;
             margin: 5px;
+        }
+
+        /* Media Queries pour améliorer la réactivité */
+        @media (max-width: 800px) {
+            .alphabet-table {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .alphabet-column {
+                margin: 10px;
+            }
         }
     </style>
 </head>
