@@ -130,15 +130,17 @@
             "T": "7", "U": "8", "V": "9", "W": "0", "X": "11", "Y": "12", "Z": "13"
         };
 
+        const reverseCipherMap = Object.fromEntries(Object.entries(cipherMap).map(([key, value]) => [value, key]));
+
         // Variables globales
-        let currentWord = generateWord();
+        let plainWord = generateWord();
+        let cipherWord = convertToCode(plainWord);
         let attempts = 0;
 
         // Génère un mot aléatoire à partir d'une liste
         function generateWord() {
             const words = ["CYBERSECURITE", "DECHIFFRER", "INTERNET", "SECURITE", "CRYPTAGE"];
-            const randomWord = words[Math.floor(Math.random() * words.length)];
-            return convertToCode(randomWord);
+            return words[Math.floor(Math.random() * words.length)];
         }
 
         // Affiche le tableau de chiffrement dans le HTML
@@ -155,7 +157,7 @@
             const userInput = document.getElementById("userInput").value.toUpperCase();
             const resultMessage = document.getElementById("resultMessage");
 
-            if (userInput === currentWord) {
+            if (userInput === plainWord) {
                 resultMessage.textContent = "Bravo ! Vous avez trouvé le bon mot.";
                 resultMessage.className = "result correct";
                 document.querySelector(".reset-btn").classList.remove("hidden");
@@ -165,7 +167,7 @@
                 resultMessage.className = "result incorrect";
 
                 if (attempts >= 3) {
-                    resultMessage.textContent = "Vous avez épuisé vos tentatives ! Le mot était : " + currentWord;
+                    resultMessage.textContent = "Vous avez épuisé vos tentatives ! Le mot était : " + plainWord;
                     document.querySelector(".reset-btn").classList.remove("hidden");
                 }
             }
@@ -176,8 +178,9 @@
         }
 
         function resetGame() {
-            currentWord = generateWord();
-            document.getElementById("wordToDecrypt").textContent = currentWord;
+            plainWord = generateWord();
+            cipherWord = convertToCode(plainWord);
+            document.getElementById("wordToDecrypt").textContent = cipherWord;
             document.getElementById("userInput").value = "";
             document.getElementById("resultMessage").textContent = "";
             attempts = 0;
@@ -186,7 +189,7 @@
 
         // Initialise le jeu
         displayCipherTable();
-        document.getElementById("wordToDecrypt").textContent = currentWord;
+        document.getElementById("wordToDecrypt").textContent = cipherWord;
     </script>
 </body>
 </html>
