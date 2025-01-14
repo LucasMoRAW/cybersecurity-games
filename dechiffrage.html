@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeu de Déchiffrement</title>
     <style>
+        /* Styles déjà optimisés */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -26,25 +27,21 @@
             max-width: 1200px;
             box-sizing: border-box;
         }
-        .game-container {
+        .game-container, .cipher-table {
             background: rgba(255, 255, 255, 0.9);
             color: #333;
             border-radius: 15px;
             box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
-            flex: 1;
             padding: 20px;
             text-align: center;
         }
+        .game-container {
+            max-width: 600px;
+            flex: 1;
+        }
         .cipher-table {
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            border-radius: 15px;
-            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
             max-width: 400px;
             flex: 1;
-            padding: 20px;
-            text-align: center;
         }
         table {
             border-collapse: collapse;
@@ -135,16 +132,16 @@
         }
 
         function checkAnswer() {
-            const userInput = document.getElementById("userInput").value.trim();
-            const decodedInput = userInput.split(/\s+/).map(code => reverseCipherMap[code] || '?').join('');
+            const userInput = document.getElementById("userInput").value.trim().toUpperCase();
+            const decodedWord = cipherWord.split(/\s+/).map(code => reverseCipherMap[code] || '?').join('');
 
             const resultMessage = document.getElementById("resultMessage");
 
-            if (decodedInput === plainWord) {
+            if (userInput === decodedWord) {
                 resultMessage.textContent = "Bravo, vous avez déchiffré le mot correctement !";
                 resultMessage.style.color = "green";
             } else {
-                resultMessage.textContent = `Erreur. Vous avez entré : "${userInput}". Mot attendu : "${plainWord}".`;
+                resultMessage.textContent = `Erreur. Vous avez entré : "${userInput}". Mot attendu : "${decodedWord}".`;
                 resultMessage.style.color = "red";
             }
         }
