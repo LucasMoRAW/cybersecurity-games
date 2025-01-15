@@ -196,7 +196,7 @@
     <div class="quiz-container" id="quiz-container">
         <p id="question" class="question"></p>
         <div id="answers" class="answer-buttons"></div>
-        <p id="timer">Temps restant: <span id="time-left">30</span> secondes</p>
+        <p id="timer">Temps restant: <span id="time-left">3</span> secondes</p>
     </div>
 
     <script>
@@ -214,7 +214,7 @@
         let currentQuestionIndex = 0;
         let score = 0;
         let timer;
-        let timeLeft = 5;
+        let timeLeft = 3;
         let playerName;
         let startTime;
 
@@ -262,7 +262,7 @@
         }
 
         function startTimer() {
-            timeLeft = 30;
+            timeLeft = 3;
             document.getElementById('time-left').textContent = timeLeft;
             timer = setInterval(() => {
                 timeLeft--;
