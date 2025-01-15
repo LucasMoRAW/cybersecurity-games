@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duel de Cybersécurité</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            margin: 20px auto;
+            max-width: 600px;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        .hidden {
+            display: none;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .timer {
+            font-size: 2em;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="welcomePage">
+        <h1>Duel de Cybersécurité</h1>
+        <p>Entrez les noms des joueurs pour commencer :</p>
+        <input type="text" id="player1Name" placeholder="Nom du Joueur 1" required>
+        <input type="text" id="player2Name" placeholder="Nom du Joueur 2" required>
+        <button onclick="startGame()">Commencer</button>
+    </div>
+
+    <div class="container hidden" id="gamePage">
+        <h2 id="currentPlayer"></h2>
+        <div class="timer" id="timer">30</div>
+        <p id="question"></p>
+        <div id="answers">
+            <button onclick="checkAnswer(0)">Option 1</button>
+            <button onclick="checkAnswer(1)">Option 2</button>
+            <button onclick="checkAnswer(2)">Option 3</button>
+            <button onclick="checkAnswer(3)">Option 4</button>
+        </div>
+    </div>
+
+    <div class="container hidden" id="resultsPage">
+        <h1>Résultats</h1>
+        <p id="results"></p>
+        <button onclick="location.reload()">Rejouer</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Que signifie le terme 'phishing' ?",
+                options: [
+                    "Une attaque pour voler des informations personnelles",
+                    "Un type de malware",
+                    "Un logiciel antivirus",
+                    "Un protocole réseau"
+                ],
+                answer: 0
+            },
+            {
+                question: "Quel est un exemple de mot de passe sécurisé ?",
+                options: [
+                    "123456",
+                    "password",
+                    "P@ssw0rd2023",
+                    "admin"
+                ],
+                answer: 2
+            },
+            {
+                question: "Quel est le rôle d'un pare-feu ?",
+                options: [
+                    "Bloquer les virus",
+                    "Filtrer les connexions réseau",
+                    "Augmenter la vitesse d'Internet",
+                    "Crypter les données"
+                ],
+                answer: 1
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let timerInterval;
+        let timer = 30;
+        let currentPlayerIndex = 0;
+        const players = [
+            { name: "", score: 0 },
+            { name: "", score: 0 }
+        ];
+
+        function startGame() {
+            players[0].name = document.getElementById("player1Name").value || "Joueur 1";
+            players[1].name = document.getElementById("player2Name").value || "Joueur 2";
+
+            document.getElementById("welcomePage").classList.add("hidden");
+            document.getElementById("gamePage").classList.remove("hidden");
+
+            startTurn();
+        }
+
+        function startTurn() {
+            if (currentQuestionIndex >= questions.length) {
+                currentQuestionIndex = 0;
+            }
+
+            timer = 30;
+            updateTimer();
+            document.getElementById("currentPlayer").textContent = `C'est au tour de ${players[currentPlayerIndex].name}`;
+
+            const questionData = questions[currentQuestionIndex];
+            document.getElementById("question").textContent = questionData.question;
+            const buttons = document.getElementById("answers").querySelectorAll("button");
+            questionData.options.forEach((option, index) => {
+                buttons[index].textContent = option;
+            });
+
+            timerInterval = setInterval(countDown, 1000);
+        }
+
+        function countDown() {
+            timer--;
+            updateTimer();
+
+            if (timer === 0) {
+                clearInterval(timerInterval);
+                nextTurn();
+            }
+        }
+
+        function updateTimer() {
+            document.getElementById("timer").textContent = timer;
+        }
+
+        function checkAnswer(selectedIndex) {
+            clearInterval(timerInterval);
+            const questionData = questions[currentQuestionIndex];
+            if (selectedIndex === questionData.answer) {
+                players[currentPlayerIndex].score++;
+            }
+            nextTurn();
+        }
+
+        function nextTurn() {
+            currentQuestionIndex++;
+            currentPlayerIndex = (currentPlayerIndex + 1) % 2;
+            if (currentQuestionIndex >= questions.length * 2) {
+                endGame();
+            } else {
+                startTurn();
+            }
+        }
+
+        function endGame() {
+            document.getElementById("gamePage").classList.add("hidden");
+            document.getElementById("resultsPage").classList.remove("hidden");
+
+            const resultText = `${players[0].name} : ${players[0].score} points \n${players[1].name} : ${players[1].score} points \n`;
+            const winner = players[0].score > players[1].score ? players[0].name : players[1].score > players[0].score ? players[1].name : "Égalité";
+            document.getElementById("results").textContent = `${resultText}\nLe gagnant est : ${winner}`;
+        }
+    </script>
+</body>
+</html>
