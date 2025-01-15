@@ -1,82 +1,79 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duel Cybersécurité</title>
+    <title>Cybersecurity Quiz Duel</title>
     <style>
         body {
-            font-family: 'Roboto Mono', monospace;
-            background: linear-gradient(135deg, #001f00, #003300);
-            color: #0f0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        header {
             text-align: center;
-            padding: 20px;
+            margin-bottom: 20px;
         }
+
         h1 {
-            color: #00ff00;
+            font-size: 2.5em;
+            color: #2c3e50;
         }
-        .container {
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #00ff00;
-            padding: 20px;
-            border-radius: 15px;
-            max-width: 400px;
-            margin: 0 auto;
+
+        p {
+            color: #34495e;
+            margin-bottom: 30px;
         }
-        label {
-            display: block;
-            margin-bottom: 10px;
+
+        .btn-container {
+            display: flex;
+            gap: 20px;
         }
-        input, button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            color: white;
+            background-color: #3498db;
             border: none;
             border-radius: 5px;
-        }
-        input {
-            background-color: #001a00;
-            color: #0f0;
-            border: 2px solid #00ff00;
-        }
-        button {
-            background-color: #004d40;
-            color: #fff;
             cursor: pointer;
-            font-weight: bold;
+            transition: background-color 0.3s ease;
         }
-        button:hover {
-            background-color: #00695c;
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #7f8c8d;
         }
     </style>
 </head>
 <body>
-    <h1>Duel Cybersécurité</h1>
-    <div class="container">
-        <form id="registrationForm">
-            <label for="player1">Nom du Joueur 1 :</label>
-            <input type="text" id="player1" required>
-            <label for="player2">Nom du Joueur 2 :</label>
-            <input type="text" id="player2" required>
-            <button type="button" onclick="startGame()">Commencer le duel</button>
-        </form>
+    <header>
+        <h1>Welcome to Cybersecurity Quiz Duel</h1>
+        <p>Challenge a friend and test your knowledge on cybersecurity topics!</p>
+    </header>
+
+    <div class="btn-container">
+        <button class="btn" onclick="location.href='player1.html'">Player 1</button>
+        <button class="btn" onclick="location.href='player2.html'">Player 2</button>
     </div>
-    <script>
-        function startGame() {
-            const player1 = document.getElementById('player1').value.trim();
-            const player2 = document.getElementById('player2').value.trim();
 
-            if (!player1 || !player2) {
-                alert("Veuillez remplir les noms des deux joueurs.");
-                return;
-            }
-
-            // Redirection vers les pages de quiz
-            sessionStorage.setItem('player1', player1);
-            sessionStorage.setItem('player2', player2);
-
-            window.location.href = 'quiz_player1.html';
-        }
-    </script>
+    <footer>
+        <p>&copy; 2025 Cybersecurity Quiz Duel. All rights reserved.</p>
+    </footer>
 </body>
 </html>
