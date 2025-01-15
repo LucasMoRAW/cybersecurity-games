@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Joueur 1</title>
+    <title>Quiz Joueur 2></title>
     <style>
         body {
             font-family: 'Roboto Mono', monospace;
@@ -40,7 +40,7 @@
     </style>
 </head>
 <body>
-    <h1>Quiz Joueur 1</h1>
+    <h1>Quiz Joueur 2</h1>
     <div class="container">
         <p id="question" class="question"></p>
         <div id="answers"></div>
@@ -55,11 +55,11 @@
 
         let currentQuestionIndex = 0;
         let score = 0;
-        const playerName = sessionStorage.getItem('player1');
+        const playerName = sessionStorage.getItem('player2');
 
         function showQuestion() {
             if (currentQuestionIndex >= questions.length) {
-                sessionStorage.setItem('player1Score', score);
+                sessionStorage.setItem('player2Score', score);
                 window.location.href = 'results.html';
                 return;
             }
