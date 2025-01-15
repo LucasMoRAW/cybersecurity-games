@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats</title>
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background: linear-gradient(135deg, #001f00, #003300);
+            color: #0f0;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff00;
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <h1>Résultats</h1>
+    <div class="container">
+        <p id="results"></p>
+    </div>
+    <script>
+        const player1 = sessionStorage.getItem('player1');
+        const player2 = sessionStorage.getItem('player2');
+        const score1 = parseInt(sessionStorage.getItem('player1Score'), 10) || 0;
+        const score2 = parseInt(sessionStorage.getItem('player2Score'), 10) || 0;
+
+        const resultsDiv = document.getElementById('results');
+
+        if (score1 > score2) {
+            resultsDiv.textContent = `${player1} gagne avec un score de ${score1} contre ${score2} !`;
+        } else if (score2 > score1) {
+            resultsDiv.textContent = `${player2} gagne avec un score de ${score2} contre ${score1} !`;
+        } else {
+            resultsDiv.textContent = `Match nul ! ${player1} et ${player2} ont tous les deux marqué ${score1} points.`;
+        }
+    </script>
+</body>
+</html>
