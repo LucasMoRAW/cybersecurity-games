@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Joueur 1</title>
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background: linear-gradient(135deg, #001f00, #003300);
+            color: #0f0;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff00;
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #004d40;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #00695c;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz Joueur 1</h1>
+    <div class="container">
+        <p id="question" class="question"></p>
+        <div id="answers"></div>
+    </div>
+    <script>
+        const questions = [
+            { q: "Que signifie HTTPS ?", a: ["HyperText Transfer Protocol Secure", "Hyper Transfer Test Secure"], correct: 0 },
+            { q: "Quel est le but principal d'un pare-feu ?", a: ["Bloquer les virus", "Contrôler le trafic réseau"], correct: 1 },
+            { q: "Que signifie VPN ?", a: ["Virtual Private Network", "Very Protected Network"], correct: 0 },
+            { q: "Quel est l'objectif principal du chiffrement ?", a: ["Accélérer les connexions", "Protéger les données"], correct: 1 }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        const playerName = sessionStorage.getItem('player1');
+
+        function showQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                sessionStorage.setItem('player1Score', score);
+                window.location.href = 'results.html';
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            document.getElementById('question').textContent = question.q;
+
+            const answersDiv = document.getElementById('answers');
+            answersDiv.innerHTML = '';
+
+            question.a.forEach((answer, index) => {
+                const button = document.createElement('button');
+                button.textContent = answer;
+                button.onclick = () => {
+                    if (index === question.correct) {
+                        score++;
+                    }
+                    currentQuestionIndex++;
+                    showQuestion();
+                };
+                answersDiv.appendChild(button);
+            });
+        }
+
+        showQuestion();
+    </script>
+</body>
+</html>
