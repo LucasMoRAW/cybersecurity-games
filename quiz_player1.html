@@ -216,8 +216,8 @@
         let timer;
         let timeLeft = 30;
         let playerName;
+        let startTime;
 
-        // Fonction pour démarrer le quiz
         function startQuiz() {
             playerName = document.getElementById('player-name').value.trim();
             if (!playerName) {
@@ -225,43 +225,42 @@
                 return;
             }
             sessionStorage.setItem('player1', playerName);
-            document.getElementById('name-input').style.display = 'none'; // Cacher le formulaire de pseudo
-            document.getElementById('quiz-container').style.display = 'block'; // Afficher le quiz
+            startTime = Date.now(); // Enregistre l'heure de début du quiz
+            document.getElementById('name-input').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'block';
             showQuestion();
             startTimer();
         }
 
-        // Afficher la question actuelle
         function showQuestion() {
             if (currentQuestionIndex >= questions.length) {
                 sessionStorage.setItem('player1Score', score);
+                const totalTime = Date.now() - startTime; // Calcule le temps total pris
+                sessionStorage.setItem('player1Time', totalTime); // Sauvegarde le temps pris
                 window.location.href = 'results.html';
                 return;
             }
 
             const question = questions[currentQuestionIndex];
             document.getElementById('question').textContent = question.q;
-
             const answersDiv = document.getElementById('answers');
             answersDiv.innerHTML = '';
-
             question.a.forEach((answer, index) => {
                 const button = document.createElement('button');
                 button.textContent = answer;
                 button.onclick = () => {
-                    clearInterval(timer); // Arrêter le timer à la réponse
+                    clearInterval(timer);
                     if (index === question.correct) {
                         score++;
                     }
                     currentQuestionIndex++;
                     showQuestion();
-                    startTimer(); // Redémarrer le timer pour la prochaine question
+                    startTimer();
                 };
                 answersDiv.appendChild(button);
             });
         }
 
-        // Démarrer le chronomètre
         function startTimer() {
             timeLeft = 30;
             document.getElementById('time-left').textContent = timeLeft;
