@@ -37,14 +37,24 @@
         button:hover {
             background-color: #00695c;
         }
+        .input-container {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <h1>Quiz Joueur 1</h1>
-    <div class="container">
+    <div class="container" id="quiz-container">
+        <div class="input-container" id="name-input">
+            <label for="player-name">Entrez votre pseudo :</label>
+            <input type="text" id="player-name" placeholder="Votre pseudo">
+            <button onclick="startQuiz()">Démarrer le Quiz</button>
+        </div>
         <p id="question" class="question"></p>
         <div id="answers"></div>
+        <p id="timer">Temps restant: <span id="time-left">30</span> secondes</p>
     </div>
+
     <script>
         const questions = [
             { q: "Que signifie HTTPS ?", a: ["HyperText Transfer Protocol Secure", "Hyper Transfer Test Secure"], correct: 0 },
@@ -55,8 +65,25 @@
 
         let currentQuestionIndex = 0;
         let score = 0;
-        const playerName = sessionStorage.getItem('player1');
+        let timer;
+        let timeLeft = 30;
+        let playerName;
 
+        // Fonction pour démarrer le quiz
+        function startQuiz() {
+            playerName = document.getElementById('player-name').value.trim();
+            if (!playerName) {
+                alert("Veuillez entrer un pseudo !");
+                return;
+            }
+            sessionStorage.setItem('player1', playerName);
+            document.getElementById('name-input').style.display = 'none'; // Cacher le formulaire de pseudo
+            document.getElementById('quiz-container').style.display = 'block'; // Afficher le quiz
+            showQuestion();
+            startTimer();
+        }
+
+        // Afficher la question actuelle
         function showQuestion() {
             if (currentQuestionIndex >= questions.length) {
                 sessionStorage.setItem('player1Score', score);
@@ -74,17 +101,33 @@
                 const button = document.createElement('button');
                 button.textContent = answer;
                 button.onclick = () => {
+                    clearInterval(timer); // Arrêter le timer à la réponse
                     if (index === question.correct) {
                         score++;
                     }
                     currentQuestionIndex++;
                     showQuestion();
+                    startTimer(); // Redémarrer le timer pour la prochaine question
                 };
                 answersDiv.appendChild(button);
             });
         }
 
-        showQuestion();
+        // Démarrer le chronomètre
+        function startTimer() {
+            timeLeft = 30;
+            document.getElementById('time-left').textContent = timeLeft;
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('time-left').textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    currentQuestionIndex++;
+                    showQuestion();
+                    startTimer();
+                }
+            }, 1000);
+        }
     </script>
 </body>
 </html>
