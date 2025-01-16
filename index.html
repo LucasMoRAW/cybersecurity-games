@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeu - Question aléatoire</title>
     <script>
-        // Rediriger aléatoirement vers une des 5 pages de questions
+        // Rediriger aléatoirement vers une des 11 pages de questions
         function redirectToRandomQuestion() {
-            // Crée un nombre aléatoire entre 1 et 5
+            // Crée un nombre aléatoire entre 1 et 11
             const randomNumber = Math.floor(Math.random() * 11) + 1;
 
             // Redirige l'utilisateur vers une des pages en fonction du nombre
@@ -41,6 +41,9 @@
                     break;
                 case 10:
                     window.location.href = "qcm10.html";  // Page 10
+                    break;                
+                case 11:
+                    window.location.href = "qcm11.html";  // Page 10
                     break;
             }
         }
