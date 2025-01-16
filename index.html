@@ -8,7 +8,7 @@
         // Rediriger aléatoirement vers une des 5 pages de questions
         function redirectToRandomQuestion() {
             // Crée un nombre aléatoire entre 1 et 5
-            const randomNumber = Math.floor(Math.random() * 5) + 1;
+            const randomNumber = Math.floor(Math.random() * 6) + 1;
 
             // Redirige l'utilisateur vers une des pages en fonction du nombre
             switch(randomNumber) {
@@ -25,7 +25,10 @@
                     window.location.href = "qcm4.html";  // Page 4
                     break;
                 case 5:
-                    window.location.href = "minijeu.html";  // Page 5
+                    window.location.href = "qcm5.html";  // Page 5
+                    break;
+                case 6:
+                    window.location.href = "qcm6.html";  // Page 6
                     break;
             }
         }
