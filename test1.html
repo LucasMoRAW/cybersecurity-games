@@ -3,280 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeu de Déchiffrement par Décalage</title>
+    <title>Jeu de Déchiffrement</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Anton&family=Poppins:wght@300;600&display=swap');
-
         body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #001f00, #003300);
-            color: #0f0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background-color: #1c1c1c;
+            color: white;
             text-align: center;
+            padding-top: 50px;
         }
 
-        h1, h2, h3 {
-            color: #00ff00;
-            font-weight: 700;
-            margin-bottom: 10px;
-            font-family: 'Anton', sans-serif;
-        }
-
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
-            width: 90%;
-            max-width: 1200px;
-            margin-top: 30px;
-        }
-
-        .game-container, .info-container {
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #00ff00;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0px 8px 20px rgba(0, 255, 0, 0.5);
-            flex: 1;
-            max-width: 500px;
-            margin-bottom: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .game-container:hover, .info-container:hover {
-            transform: scale(1.05);
-            box-shadow: 0px 8px 40px rgba(0, 255, 0, 0.7);
-        }
-
-        .cipher-word {
-            font-family: 'Courier New', monospace;
-            font-size: 2.5rem;
+        #cipherWord {
+            font-size: 2em;
+            letter-spacing: 2px;
+            color: #ff4d4d;
             font-weight: bold;
-            background: linear-gradient(90deg, #00ff00, #000);
-            -webkit-background-clip: text;
-            color: transparent;
-            border-radius: 10px;
+        }
+
+        #userInput {
+            margin-top: 20px;
             padding: 10px;
-            margin: 20px auto;
-            display: inline-block;
-            animation: glitch 1.5s infinite;
-        }
-
-        input, button {
-            font-size: 1rem;
-            padding: 12px 25px;
-            margin: 10px 5px;
-            border: none;
+            font-size: 1.2em;
+            width: 300px;
+            border: 2px solid #ff4d4d;
             border-radius: 5px;
-            transition: background 0.3s, transform 0.3s;
+            background-color: #333;
+            color: white;
         }
 
-        input {
-            background-color: #001a00;
-            color: #0f0;
-            border: 2px solid #00ff00;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        button {
-            background-color: #004d40;
-            color: #fff;
-            font-family: 'Poppins', sans-serif;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        button:hover {
-            background-color: #00695c;
-            transform: scale(1.05);
-        }
-
-        .result {
-            margin: 15px 0;
-            font-size: 1.2rem;
-            color: #ff0;
-            font-weight: 600;
-        }
-
-        .timer {
-            font-size: 1.5rem;
+        #resultMessage {
+            margin-top: 20px;
+            font-size: 1.5em;
             font-weight: bold;
+        }
+
+        #timer {
             margin-top: 20px;
-            color: #ff0;
-            font-family: 'Poppins', sans-serif;
+            font-size: 1.2em;
+            color: #ffcc00;
         }
 
-        .warning {
-            color: #ff4500;
-            font-weight: 700;
+        /* Effet de néon */
+        .neon {
+            text-shadow: 0 0 5px #ff4d4d, 0 0 10px #ff4d4d, 0 0 20px #ff4d4d;
         }
 
-        @keyframes glitch {
-            0%, 100% {
-                text-shadow: -2px -2px #00ff00, 2px 2px #000;
-            }
-            50% {
-                text-shadow: 2px 2px #00ff00, -2px -2px #000;
-            }
+        /* Clignotement du message de résultat */
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
 
-        .alphabet-table {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .alphabet-column {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .alphabet-column span {
-            font-size: 1.5rem;
-            margin: 5px;
-            color: #00ff00;
-        }
-
-        /* Media Queries pour améliorer la réactivité */
-        @media (max-width: 800px) {
-            .alphabet-table {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .alphabet-column {
-                margin: 10px;
-            }
-
-            .game-container, .info-container {
-                width: 100%;
-                margin-bottom: 30px;
-            }
+        .flicker {
+            animation: flicker 0.5s infinite;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Section Jeu -->
-        <div class="game-container">
-            <h1>Jeu de Déchiffrement</h1>
-            <h2>Mot à déchiffrer :</h2>
-            <div id="wordToDecrypt" class="cipher-word"></div>
-            <p>La première lettre déchiffrée est : <span id="firstLetter"></span></p>
-            <input type="text" id="userInput" placeholder="Entrez le mot clair" autofocus>
-            <button onclick="checkAnswer()">Valider</button>
-            <p id="resultMessage" class="result"></p>
-            <button onclick="resetGame()">Rejouer</button>
-            <br>
-            <p class="timer" id="timer">Temps restant : 90s</p>
-            <a href="#tab">Voir le tableau des correspondances</a>
-        </div>
+    <h1>Jeu de Déchiffrement</h1>
 
-        <!-- Section Tableau des lettres -->
-        <div class="info-container">
-            <h3 id="tab">Tableau de correspondance des lettres :</h3>
-            <div class="alphabet-table">
-                <!-- Première colonne : A-M -->
-                <div class="alphabet-column">
-                    <span>A</span>
-                    <span>B</span>
-                    <span>C</span>
-                    <span>D</span>
-                    <span>E</span>
-                    <span>F</span>
-                    <span>G</span>
-                    <span>H</span>
-                    <span>I</span>
-                    <span>J</span>
-                    <span>K</span>
-                    <span>L</span>
-                    <span>M</span>
-                </div>
-                <!-- Deuxième colonne : N-Z -->
-                <div class="alphabet-column">
-                    <span>N</span>
-                    <span>O</span>
-                    <span>P</span>
-                    <span>Q</span>
-                    <span>R</span>
-                    <span>S</span>
-                    <span>T</span>
-                    <span>U</span>
-                    <span>V</span>
-                    <span>W</span>
-                    <span>X</span>
-                    <span>Y</span>
-                    <span>Z</span>
-                </div>
-            </div>
-        </div>
-    </div>
+    <p>Le mot à déchiffrer :</p>
+    <p id="wordToDecrypt" class="neon"></p>
+
+    <input type="text" id="userInput" placeholder="Entrez votre mot déchiffré">
+    <button onclick="checkWord()">Vérifier</button>
+    <button onclick="resetGame()">Recommencer</button>
+
+    <p id="timer"></p>
+    <p id="resultMessage"></p>
 
     <script>
-        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         let plainWord = generateWord();
         let shift = generateShift();
         let cipherWord = applyShift(plainWord, shift);
+        let timerValue = 30;
         let timerInterval;
-        let timeRemaining = 90;
 
         function generateWord() {
-            const words = ["CYBERSECURITE", "DECHIFFRER", "INTERNET", "SECURITE", "CRYPTAGE", 
-                "FIREWALL", "MALWARE", "PHISHING", "RANSOMWARE", "TROJAN", 
-                "ENCRYPTION", "BOTNET", "HACKER", "PASSWORD", "VULNERABILITY", 
-                "SPYWARE", "KEYLOGGER", "ANTIVIRUS", "EXPLOIT", "BREACH", 
-                "TROJAN HORSE", "DDoS", "SOC", "BOTS", "SQL INJECTION", 
-                "PENETRATION TESTING", "APT", "VIRUS", "BACKDOOR", "HACKTIVISM", 
-                "SECURITY PROTOCOL", "DETECTION", "CYBERATTACK", "ZERO-DAY", 
-                "CIPHERTEXT", "DECRYPTION", "PHISHING ATTACK", "DNS SPOOFING", 
-                "RAT", "XSS", "CERTIFICATE", "CROSS SITE SCRIPTING", "MFA", 
-                "TWO-FACTOR AUTHENTICATION", "ENCRYPTED", "STEGANOGRAPHY", 
-                "DARK WEB", "HONEY POT", "CRYPTOJACKING", "SECURITY PATCH", 
-                "SYN FLOOD", "MALICIOUS CODE", "SNOOPING", "WHITE HAT", "BLACK HAT"];
+            const words = ["bonjour", "amour", "paris", "voiture", "elephant", "ordinateur"];
             return words[Math.floor(Math.random() * words.length)];
         }
 
         function generateShift() {
-            return Math.floor(Math.random() * 5) + 1; // Décalage entre 3 et 8
+            return Math.floor(Math.random() * 26); // Décalage aléatoire entre 0 et 25
         }
 
         function applyShift(word, shift) {
-            return word.split('').map(char => {
-                if (!alphabet.includes(char)) return char;
-                let newIndex = (alphabet.indexOf(char) + shift + alphabet.length) % alphabet.length;
-                return alphabet[newIndex];
-            }).join('');
+            const alphabet = "abcdefghijklmnopqrstuvwxyz";
+            let result = "";
+
+            for (let i = 0; i < word.length; i++) {
+                const index = alphabet.indexOf(word[i]);
+                if (index !== -1) {
+                    result += alphabet[(index + shift) % 26];
+                } else {
+                    result += word[i];
+                }
+            }
+
+            return result;
         }
 
-        function reverseShift(cipherWord, shift) {
-            return cipherWord.split('').map(char => {
-                if (!alphabet.includes(char)) return char;
-                let newIndex = (alphabet.indexOf(char) - shift + alphabet.length) % alphabet.length;
-                return alphabet[newIndex];
-            }).join('');
-        }
+        function checkWord() {
+            const userInput = document.getElementById("userInput").value.toLowerCase();
+            const decodedWord = applyShift(cipherWord, 26 - shift);
 
-        function checkAnswer() {
-            const userInput = document.getElementById("userInput").value.trim().toUpperCase();
-            const decodedWord = reverseShift(cipherWord, shift);
             if (userInput === decodedWord) {
                 document.getElementById("resultMessage").textContent = "Bravo! Vous avez trouvé le mot!";
-                document.getElementById("resultMessage").style.color = "#0f0";
-                clearInterval(timerInterval);
+                document.getElementById("resultMessage").style.color = "#00ff00";
+                document.getElementById("resultMessage").classList.remove("flicker");
+                clearInterval(timerInterval); // Stop le chronomètre à la réussite
             } else {
-                document.getElementById("resultMessage").textContent = "Essayez encore!";
-                document.getElementById("resultMessage").style.color = "#ff0";
+                document.getElementById("resultMessage").textContent = "Ce n'est pas le bon mot. Essayez encore!";
+                document.getElementById("resultMessage").style.color = "#ff0000";
+                document.getElementById("resultMessage").classList.add("flicker");
             }
         }
 
@@ -284,36 +125,31 @@
             plainWord = generateWord();
             shift = generateShift();
             cipherWord = applyShift(plainWord, shift);
-            document.getElementById("wordToDecrypt").textContent = cipherWord;
-            document.getElementById("firstLetter").textContent = cipherWord[0];
             document.getElementById("userInput").value = "";
             document.getElementById("resultMessage").textContent = "";
-            clearInterval(timerInterval);
-            timeRemaining = 90;
-            document.getElementById("timer").textContent = "Temps restant : 90s";
+            document.getElementById("resultMessage").classList.remove("flicker");
+            document.getElementById("wordToDecrypt").textContent = cipherWord;
             startTimer();
         }
 
         function startTimer() {
-            timerInterval = setInterval(function () {
-                timeRemaining--;
-                document.getElementById("timer").textContent = "Temps restant : " + timeRemaining + "s";
-                if (timeRemaining === 10) {
-                    document.getElementById("timer").classList.add("warning");
-                }
-                if (timeRemaining <= 0) {
+            clearInterval(timerInterval);  // Clear any existing timer
+            timerInterval = setInterval(function() {
+                timerValue--;
+                document.getElementById("timer").textContent = "Temps restant : " + timerValue;
+                if (timerValue <= 0) {
                     clearInterval(timerInterval);
-                    document.getElementById("resultMessage").textContent = "Temps écoulé! Le mot était : " + reverseShift(cipherWord, shift);
-                    document.getElementById("resultMessage").style.color = "#f00";
+                    document.getElementById("resultMessage").textContent = "Le temps est écoulé!";
+                    document.getElementById("resultMessage").style.color = "#ff0000";
+                    document.getElementById("resultMessage").classList.add("flicker");
                 }
             }, 1000);
         }
 
         window.onload = function() {
             document.getElementById("wordToDecrypt").textContent = cipherWord;
-            document.getElementById("firstLetter").textContent = cipherWord[0];
             startTimer();
-        }
+        };
     </script>
 </body>
 </html>
