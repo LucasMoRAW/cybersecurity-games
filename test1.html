@@ -3,153 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeu de Déchiffrement</title>
+    <title>Jeu de Déchiffrement par Décalage</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #1c1c1c;
-            color: white;
+            font-family: 'Press Start 2P', monospace;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #001f00, #003300);
+            color: #0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
             text-align: center;
-            padding-top: 50px;
         }
 
-        #cipherWord {
-            font-size: 2em;
-            letter-spacing: 2px;
-            color: #ff4d4d;
+        h1, h2, h3 {
+            color: #00ff00;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            width: 90%;
+            max-width: 1200px;
+            margin-top: 30px;
+        }
+
+        .game-container, .info-container {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0px 8px 20px rgba(0, 255, 0, 0.5);
+            flex: 1;
+            max-width: 500px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+            width: 100%;
+        }
+
+        .game-container:hover, .info-container:hover {
+            transform: scale(1.05);
+        }
+
+        .cipher-word {
+            font-family: 'Courier New', monospace;
+            font-size: 2rem;
             font-weight: bold;
-        }
-
-        #userInput {
-            margin-top: 20px;
+            background: linear-gradient(90deg, #00ff00, #000);
+            -webkit-background-clip: text;
+            color: transparent;
+            border-radius: 10px;
             padding: 10px;
-            font-size: 1.2em;
-            width: 300px;
-            border: 2px solid #ff4d4d;
+            margin: 20px auto;
+            display: inline-block;
+            animation: glitch 1.5s infinite;
+            word-wrap: break-word;
+            white-space: normal; /* Permet de couper les mots longs */
+            max-width: 100%;
+        }
+
+        input, button {
+            font-size: 1rem;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border: none;
             border-radius: 5px;
-            background-color: #333;
-            color: white;
+            transition: background 0.3s;
         }
 
-        #resultMessage {
-            margin-top: 20px;
-            font-size: 1.5em;
+        input {
+            background-color: #001a00;
+            color: #0f0;
+            border: 2px solid #00ff00;
+        }
+
+        button {
+            background-color: #004d40;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #00695c;
+        }
+
+        .result {
+            margin: 15px 0;
+            font-size: 1.2rem;
+            color: #ff0;
+        }
+
+        .timer {
+            font-size: 1.5rem;
             font-weight: bold;
+            color: #ff0000;
         }
 
-        #timer {
+        @keyframes glitch {
+            0%, 100% {
+                text-shadow: -2px -2px #00ff00, 2px 2px #000;
+            }
+            50% {
+                text-shadow: 2px 2px #00ff00, -2px -2px #000;
+            }
+        }
+
+        .alphabet-table {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
             margin-top: 20px;
-            font-size: 1.2em;
-            color: #ffcc00;
+            flex-wrap: wrap;
         }
 
-        /* Effet de néon */
-        .neon {
-            text-shadow: 0 0 5px #ff4d4d, 0 0 10px #ff4d4d, 0 0 20px #ff4d4d;
+        .alphabet-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Clignotement du message de résultat */
-        @keyframes flicker {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+        .alphabet-column span {
+            font-size: 1.5rem;
+            margin: 5px;
+            color: #00ff00;
         }
 
-        .flicker {
-            animation: flicker 0.5s infinite;
+        /* Media Queries pour améliorer la réactivité */
+        @media (max-width: 800px) {
+            .container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .alphabet-table {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .game-container, .info-container {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+
+            .cipher-word {
+                font-size: 1.8rem;
+                max-width: 90%;
+            }
+
+            .result, .timer {
+                font-size: 1rem;
+            }
+
+            input, button {
+                font-size: 1rem;
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Jeu de Déchiffrement</h1>
+    <div class="container">
+        <!-- Section Jeu -->
+        <div class="game-container">
+            <h1>Jeu de Déchiffrement</h1>
+            <br>
+            <h2>Mot à déchiffrer :</h2>
+            <div id="wordToDecrypt" class="cipher-word"></div>
+            <p>La première lettre déchiffrée est : <span id="firstLetter"></span></p>
+            <br>
+            <p id="timer" class="timer">Temps restant : 90</p>
+            <input type="text" id="userInput" placeholder="Entrez le mot clair" autofocus>
+            <button onclick="checkAnswer()">Valider</button>
+            <p id="resultMessage" class="result"></p>
+            <button onclick="resetGame()">Rejouer</button>
+            <br><br>
+            <a href="#tab"> Voir le tableau des correspondances </a>
+        </div>
 
-    <p>Le mot à déchiffrer :</p>
-    <p id="wordToDecrypt" class="neon"></p>
-
-    <input type="text" id="userInput" placeholder="Entrez votre mot déchiffré">
-    <button onclick="checkWord()">Vérifier</button>
-    <button onclick="resetGame()">Recommencer</button>
-
-    <p id="timer"></p>
-    <p id="resultMessage"></p>
+        <!-- Section Tableau des lettres -->
+        <div class="info-container">
+            <h3 id = "tab"> Tableau de correspondance des lettres :</h3>
+            <div class="alphabet-table">
+                <!-- Première colonne : A-M -->
+                <div class="alphabet-column">
+                    <span>A</span>
+                    <span>B</span>
+                    <span>C</span>
+                    <span>D</span>
+                    <span>E</span>
+                    <span>F</span>
+                    <span>G</span>
+                    <span>H</span>
+                    <span>I</span>
+                    <span>J</span>
+                    <span>K</span>
+                    <span>L</span>
+                    <span>M</span>
+                </div>
+                <!-- Deuxième colonne : N-Z -->
+                <div class="alphabet-column">
+                    <span>N</span>
+                    <span>O</span>
+                    <span>P</span>
+                    <span>Q</span>
+                    <span>R</span>
+                    <span>S</span>
+                    <span>T</span>
+                    <span>U</span>
+                    <span>V</span>
+                    <span>W</span>
+                    <span>X</span>
+                    <span>Y</span>
+                    <span>Z</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         let plainWord = generateWord();
         let shift = generateShift();
         let cipherWord = applyShift(plainWord, shift);
-        let timerValue = 30;
+        let timerValue = 90;  // Temps initial en secondes
         let timerInterval;
 
         function generateWord() {
-            const words = ["bonjour", "amour", "paris", "voiture", "elephant", "ordinateur"];
+            const words = ["CYBERSECURITE", "DECHIFFRER", "INTERNET", "SECURITE", "CRYPTAGE", 
+        "FIREWALL", "MALWARE", "PHISHING", "RANSOMWARE", "TROJAN", 
+        "ENCRYPTION", "BOTNET", "HACKER", "PASSWORD", "VULNERABILITY", 
+        "SPYWARE", "KEYLOGGER", "ANTIVIRUS", "EXPLOIT", "BREACH", 
+        "TROJAN HORSE", "DDoS", "SOC", "BOTS", "SQL INJECTION", 
+        "PENETRATION TESTING", "APT", "VIRUS", "BACKDOOR", "HACKTIVISM", 
+        "SECURITY PROTOCOL", "DETECTION", "CYBERATTACK", "ZERO-DAY", 
+        "CIPHERTEXT", "DECRYPTION", "PHISHING ATTACK", "DNS SPOOFING", 
+        "RAT", "XSS", "CERTIFICATE", "CROSS SITE SCRIPTING", "MFA", 
+        "TWO-FACTOR AUTHENTICATION", "ENCRYPTED", "STEGANOGRAPHY", 
+        "DARK WEB", "HONEY POT", "CRYPTOJACKING", "SECURITY PATCH", 
+        "SYN FLOOD", "MALICIOUS CODE", "SNOOPING", "WHITE HAT", "BLACK HAT"];
             return words[Math.floor(Math.random() * words.length)];
         }
 
         function generateShift() {
-            return Math.floor(Math.random() * 26); // Décalage aléatoire entre 0 et 25
+            return Math.floor(Math.random() * 5) + 1; // Décalage entre 3 et 8
         }
 
         function applyShift(word, shift) {
-            const alphabet = "abcdefghijklmnopqrstuvwxyz";
-            let result = "";
-
-            for (let i = 0; i < word.length; i++) {
-                const index = alphabet.indexOf(word[i]);
-                if (index !== -1) {
-                    result += alphabet[(index + shift) % 26];
-                } else {
-                    result += word[i];
-                }
-            }
-
-            return result;
+            return word.split('').map(char => {
+                if (!alphabet.includes(char)) return char;
+                let idx = (alphabet.indexOf(char) + shift) % alphabet.length;
+                return alphabet[idx];
+            }).join('');
         }
 
-        function checkWord() {
-            const userInput = document.getElementById("userInput").value.toLowerCase();
-            const decodedWord = applyShift(cipherWord, 26 - shift);
-
-            if (userInput === decodedWord) {
-                document.getElementById("resultMessage").textContent = "Bravo! Vous avez trouvé le mot!";
-                document.getElementById("resultMessage").style.color = "#00ff00";
-                document.getElementById("resultMessage").classList.remove("flicker");
-                clearInterval(timerInterval); // Stop le chronomètre à la réussite
+        function checkAnswer() {
+            const userAnswer = document.getElementById("userInput").value.toUpperCase();
+            if (userAnswer === plainWord) {
+                document.getElementById("resultMessage").textContent = "Bravo, vous avez trouvé le mot !";
+                document.getElementById("resultMessage").style.color = "#0f0";
+                clearInterval(timerInterval);
             } else {
-                document.getElementById("resultMessage").textContent = "Ce n'est pas le bon mot. Essayez encore!";
-                document.getElementById("resultMessage").style.color = "#ff0000";
-                document.getElementById("resultMessage").classList.add("flicker");
+                document.getElementById("resultMessage").textContent = "Mauvaise réponse, essayez encore !";
+                document.getElementById("resultMessage").style.color = "#f00";
             }
-        }
-
-        function resetGame() {
-            plainWord = generateWord();
-            shift = generateShift();
-            cipherWord = applyShift(plainWord, shift);
-            document.getElementById("userInput").value = "";
-            document.getElementById("resultMessage").textContent = "";
-            document.getElementById("resultMessage").classList.remove("flicker");
-            document.getElementById("wordToDecrypt").textContent = cipherWord;
-            startTimer();
         }
 
         function startTimer() {
-            clearInterval(timerInterval);  // Clear any existing timer
             timerInterval = setInterval(function() {
                 timerValue--;
-                document.getElementById("timer").textContent = "Temps restant : " + timerValue;
+                document.getElementById("timer").textContent = `Temps restant : ${timerValue}`;
                 if (timerValue <= 0) {
                     clearInterval(timerInterval);
-                    document.getElementById("resultMessage").textContent = "Le temps est écoulé!";
-                    document.getElementById("resultMessage").style.color = "#ff0000";
-                    document.getElementById("resultMessage").classList.add("flicker");
+                    document.getElementById("resultMessage").textContent = "Temps écoulé !";
+                    document.getElementById("resultMessage").style.color = "#f00";
                 }
             }, 1000);
         }
 
-        window.onload = function() {
+        // Initialisation du jeu
+        document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("wordToDecrypt").textContent = cipherWord;
+            document.getElementById("firstLetter").textContent = plainWord[0];
             startTimer();
-        };
+        });
     </script>
 </body>
 </html>
