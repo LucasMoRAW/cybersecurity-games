@@ -7,7 +7,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-
         body {
             font-family: 'Press Start 2P', monospace;
             margin: 0;
@@ -21,20 +20,19 @@
             min-height: 100vh;
             text-align: center;
         }
-        
+
         h1, h2, h3 {
             color: #00ff00;
             font-weight: 700;
             margin-bottom: 10px;
         }
-        
 
         .container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            gap: 40px;
+            gap: 20px;
             width: 90%;
             max-width: 1200px;
             margin-top: 30px;
@@ -50,6 +48,7 @@
             max-width: 500px;
             margin-bottom: 20px;
             transition: transform 0.3s ease;
+            width: 100%;
         }
 
         .game-container:hover, .info-container:hover {
@@ -58,7 +57,7 @@
 
         .cipher-word {
             font-family: 'Courier New', monospace;
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: bold;
             background: linear-gradient(90deg, #00ff00, #000);
             -webkit-background-clip: text;
@@ -138,18 +137,32 @@
 
         /* Media Queries pour améliorer la réactivité */
         @media (max-width: 800px) {
-            .alphabet-table {
+            .container {
                 flex-direction: column;
-                align-items: center;
+                gap: 20px;
             }
 
-            .alphabet-column {
-                margin: 10px;
+            .alphabet-table {
+                flex-direction: column;
+                gap: 10px;
             }
 
             .game-container, .info-container {
-                width: 100%;
-                margin-bottom: 30px;
+                width: 90%;
+                margin-bottom: 20px;
+            }
+
+            .cipher-word {
+                font-size: 1.8rem;
+            }
+
+            .result, .timer {
+                font-size: 1rem;
+            }
+
+            input, button {
+                font-size: 1rem;
+                padding: 8px 16px;
             }
         }
     </style>
@@ -159,15 +172,17 @@
         <!-- Section Jeu -->
         <div class="game-container">
             <h1>Jeu de Déchiffrement</h1>
+            <br>
             <h2>Mot à déchiffrer :</h2>
             <div id="wordToDecrypt" class="cipher-word"></div>
             <p>La première lettre déchiffrée est : <span id="firstLetter"></span></p>
+            <br>
             <p id="timer" class="timer">Temps restant : 90</p>
             <input type="text" id="userInput" placeholder="Entrez le mot clair" autofocus>
             <button onclick="checkAnswer()">Valider</button>
             <p id="resultMessage" class="result"></p>
             <button onclick="resetGame()">Rejouer</button>
-            <br>
+            <br><br>
             <a href="#tab"> Voir le tableau des correspondances </a>
         </div>
 
@@ -287,20 +302,23 @@
         }
 
         function startTimer() {
-            timerInterval = setInterval(() => {
+            timerInterval = setInterval(function() {
                 timerValue--;
                 document.getElementById("timer").textContent = `Temps restant : ${timerValue}`;
                 if (timerValue <= 0) {
                     clearInterval(timerInterval);
-                    document.getElementById("resultMessage").textContent = "Temps écoulé ! Vous avez perdu.";
+                    document.getElementById("resultMessage").textContent = "Temps écoulé !";
                     document.getElementById("resultMessage").style.color = "#f00";
                 }
             }, 1000);
         }
 
-        document.getElementById("wordToDecrypt").textContent = cipherWord;
-        document.getElementById("firstLetter").textContent = plainWord[0];
-        startTimer(); // Lancer le chronomètre dès le début
+        // Initialisation du jeu
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("wordToDecrypt").textContent = cipherWord;
+            document.getElementById("firstLetter").textContent = plainWord[0];
+            startTimer();
+        });
     </script>
 </body>
 </html>
